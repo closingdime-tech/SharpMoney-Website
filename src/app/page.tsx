@@ -329,6 +329,7 @@ function Pricing() {
       cta: 'Go Alpha',
       href: 'https://whop.com/sharpmoney/alpha-4e/',
       popular: false,
+      gold: true,
     },
   ];
 
@@ -349,12 +350,19 @@ function Pricing() {
             <div 
               key={i}
               className={`relative rounded-2xl p-8 ${
-                plan.popular 
-                  ? 'bg-gradient-to-b from-cyan/10 to-transparent border-2 border-cyan glow-cyan' 
-                  : 'bg-card-bg border border-card-border'
+                plan.gold
+                  ? 'bg-gradient-to-b from-yellow-500/20 to-transparent border-2 border-yellow-500 shadow-[0_0_40px_rgba(234,179,8,0.3)]'
+                  : plan.popular 
+                    ? 'bg-gradient-to-b from-cyan/10 to-transparent border-2 border-cyan glow-cyan' 
+                    : 'bg-card-bg border border-card-border'
               }`}
             >
-              {plan.popular && (
+              {plan.gold && (
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-yellow-500 to-yellow-600 text-black text-sm font-bold px-4 py-1 rounded-full">
+                  ⭐ PREMIUM
+                </div>
+              )}
+              {plan.popular && !plan.gold && (
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-cyan text-black text-sm font-bold px-4 py-1 rounded-full">
                   MOST POPULAR
                 </div>
@@ -393,9 +401,11 @@ function Pricing() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`block w-full text-center py-4 rounded-lg font-semibold transition-all ${
-                  plan.popular
-                    ? 'bg-cyan text-black hover:bg-cyan-dim'
-                    : 'bg-white/10 text-white hover:bg-white/20'
+                  plan.gold
+                    ? 'bg-gradient-to-r from-yellow-500 to-yellow-600 text-black hover:from-yellow-400 hover:to-yellow-500'
+                    : plan.popular
+                      ? 'bg-cyan text-black hover:bg-cyan-dim'
+                      : 'bg-white/10 text-white hover:bg-white/20'
                 }`}
               >
                 {plan.cta}
