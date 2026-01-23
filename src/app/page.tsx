@@ -359,7 +359,7 @@ function Pricing() {
             >
               {plan.gold && (
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-yellow-500 to-yellow-600 text-black text-sm font-bold px-4 py-1 rounded-full">
-                  ⭐ PREMIUM
+                  ⚡ MAXIMUM EDGE
                 </div>
               )}
               {plan.popular && !plan.gold && (
