@@ -144,13 +144,18 @@ function Hero() {
         {/* Stats bar */}
         <div className="opacity-0 animate-fade-in-up animation-delay-600 mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
           {[
-            { value: '4.9', label: 'Stars on Whop' },
-            { value: '5K+', label: 'Community Members' },
-            { value: '20+', label: 'Sportsbooks' },
-            { value: '5%+', label: 'ROI on Signal' },
+            { value: '4.9', label: 'Stars on Whop', stars: true },
+            { value: '5K+', label: 'Community Members', stars: false },
+            { value: '20+', label: 'Sportsbooks', stars: false },
+            { value: '5%+', label: 'ROI on Signal', stars: false },
           ].map((stat, i) => (
             <div key={i} className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-cyan mb-2">{stat.value}</div>
+              <div className="text-3xl md:text-4xl font-bold text-cyan mb-2 flex items-center justify-center gap-2">
+                {stat.value}
+                {stat.stars && (
+                  <span className="text-yellow-400 text-2xl">★★★★★</span>
+                )}
+              </div>
               <div className="text-sm text-white/50">{stat.label}</div>
             </div>
           ))}
