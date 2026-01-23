@@ -276,6 +276,7 @@ function Pricing() {
         'Basic filters (sportsbook, EV %, league)',
         'Community access',
       ],
+      basics: true,
       notIncluded: [
         'Sharp sportsbooks',
         'Line movement charts',
@@ -354,12 +355,19 @@ function Pricing() {
                   ? 'bg-gradient-to-b from-yellow-500/20 to-transparent border-2 border-yellow-500 shadow-[0_0_40px_rgba(234,179,8,0.3)]'
                   : plan.popular 
                     ? 'bg-gradient-to-b from-cyan/10 to-transparent border-2 border-cyan glow-cyan' 
-                    : 'bg-card-bg border border-card-border'
+                    : plan.basics
+                      ? 'bg-card-bg border-2 border-gray-500'
+                      : 'bg-card-bg border border-card-border'
               }`}
             >
               {plan.gold && (
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-yellow-500 to-yellow-600 text-black text-sm font-bold px-4 py-1 rounded-full">
                   ⚡ MAXIMUM EDGE
+                </div>
+              )}
+              {plan.basics && (
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gray-500 text-white text-sm font-bold px-4 py-1 rounded-full">
+                  THE BASICS
                 </div>
               )}
               {plan.popular && !plan.gold && (
