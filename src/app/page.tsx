@@ -262,6 +262,75 @@ function Features() {
   );
 }
 
+// Plus EV Video Section
+function PlusEVVideo() {
+  return (
+    <section id="plus-ev" className="py-24 md:py-32 relative overflow-hidden">
+      {/* Background effects */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black via-card-bg/50 to-black" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan/5 rounded-full blur-[120px]" />
+      
+      <div className="relative z-10 max-w-6xl mx-auto px-6">
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 bg-cyan/10 border border-cyan/30 text-cyan text-sm font-semibold px-4 py-2 rounded-full mb-6">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            WATCH THE BREAKDOWN
+          </div>
+          
+          <h2 className="text-3xl md:text-5xl font-bold mb-4">
+            See <span className="gradient-text">Plus EV</span> in Action
+          </h2>
+          <p className="text-lg text-white/60 max-w-3xl mx-auto">
+            If you're betting who you think will win, you're already losing. Watch how SharpMoney Plus EV 
+            helps you identify real value before the lines move.
+          </p>
+        </div>
+
+        {/* Video Container */}
+        <div className="relative max-w-4xl mx-auto">
+          <div className="gradient-border p-2 md:p-3">
+            <div className="relative rounded-xl overflow-hidden bg-black aspect-video">
+              <video
+                controls
+                playsInline
+                preload="metadata"
+                poster=""
+                className="w-full h-full object-cover"
+              >
+                <source src="/SharpMoney_1.mov" type="video/quicktime" />
+                <source src="/SharpMoney_1.mov" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </div>
+          
+          {/* Decorative elements */}
+          <div className="absolute -top-4 -right-4 w-24 h-24 bg-cyan/20 rounded-full blur-2xl" />
+          <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-blue/20 rounded-full blur-2xl" />
+        </div>
+
+        {/* Key highlights from video */}
+        <div className="mt-12 grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          {[
+            { icon: '⚡', title: 'Fastest Engine', desc: 'Get to bets before the market adjusts' },
+            { icon: '📊', title: '20+ Sportsbooks', desc: 'Complete market coverage in one place' },
+            { icon: '🎯', title: 'One-Click Bets', desc: 'Straight to your sportsbook bet slip' },
+          ].map((item, i) => (
+            <div key={i} className="text-center p-4">
+              <div className="text-3xl mb-2">{item.icon}</div>
+              <h4 className="font-semibold text-white mb-1">{item.title}</h4>
+              <p className="text-sm text-white/50">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // Pricing Section
 function Pricing() {
   const plans = [
@@ -348,15 +417,18 @@ function Pricing() {
 
         <div className="grid lg:grid-cols-3 gap-8">
           {plans.map((plan, i) => (
-            <div 
+            <a 
               key={i}
-              className={`relative rounded-2xl p-8 ${
+              href={plan.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`relative rounded-2xl p-8 block cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:-translate-y-2 ${
                 plan.gold
-                  ? 'bg-gradient-to-b from-yellow-500/20 to-transparent border-2 border-yellow-500 shadow-[0_0_40px_rgba(234,179,8,0.3)]'
+                  ? 'bg-gradient-to-b from-yellow-500/20 to-transparent border-2 border-yellow-500 shadow-[0_0_40px_rgba(234,179,8,0.3)] hover:shadow-[0_0_60px_rgba(234,179,8,0.5)]'
                   : plan.popular 
-                    ? 'bg-gradient-to-b from-cyan/10 to-transparent border-2 border-cyan glow-cyan' 
+                    ? 'bg-gradient-to-b from-cyan/10 to-transparent border-2 border-cyan glow-cyan hover:shadow-[0_0_60px_rgba(0,229,255,0.5)]' 
                     : plan.basics
-                      ? 'bg-card-bg border-2 border-gray-500'
+                      ? 'bg-card-bg border-2 border-gray-500 hover:border-gray-400 hover:shadow-[0_0_30px_rgba(156,163,175,0.2)]'
                       : 'bg-card-bg border border-card-border'
               }`}
             >
@@ -404,21 +476,18 @@ function Pricing() {
                 ))}
               </ul>
 
-              <a 
-                href={plan.href}
-                target="_blank"
-                rel="noopener noreferrer"
+              <div 
                 className={`block w-full text-center py-4 rounded-lg font-semibold transition-all ${
                   plan.gold
-                    ? 'bg-gradient-to-r from-yellow-500 to-yellow-600 text-black hover:from-yellow-400 hover:to-yellow-500'
+                    ? 'bg-gradient-to-r from-yellow-500 to-yellow-600 text-black'
                     : plan.popular
-                      ? 'bg-cyan text-black hover:bg-cyan-dim'
-                      : 'bg-white/10 text-white hover:bg-white/20'
+                      ? 'bg-cyan text-black'
+                      : 'bg-white/10 text-white'
                 }`}
               >
                 {plan.cta}
-              </a>
-            </div>
+              </div>
+            </a>
           ))}
         </div>
       </div>
@@ -703,6 +772,7 @@ export default function Home() {
       <main>
         <Hero />
         <Features />
+        <PlusEVVideo />
         <Pricing />
         <Signal />
         <Community />
