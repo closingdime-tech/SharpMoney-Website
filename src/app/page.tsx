@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import Image from 'next/image';
 
 // SharpMoney Logo Component - uses actual logo image
@@ -265,31 +265,19 @@ function Features() {
 // Plus EV Video Section
 function PlusEVVideo() {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
-  useEffect(() => {
+  const handlePlayClick = () => {
     const video = videoRef.current;
-    const container = containerRef.current;
-    if (!video || !container) return;
+    if (video) {
+      video.play();
+      setIsPlaying(true);
+    }
+  };
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            video.play().catch(() => {
-              // Autoplay was prevented, user will need to click play
-            });
-          } else {
-            video.pause();
-          }
-        });
-      },
-      { threshold: 0.5 } // Play when 50% of video is visible
-    );
-
-    observer.observe(container);
-    return () => observer.disconnect();
-  }, []);
+  const handleVideoEnd = () => {
+    setIsPlaying(false);
+  };
 
   return (
     <section id="plus-ev" className="py-24 md:py-32 relative overflow-hidden">
@@ -317,42 +305,41 @@ function PlusEVVideo() {
         </div>
 
         {/* Video Container */}
-        <div className="relative max-w-4xl mx-auto" ref={containerRef}>
+        <div className="relative max-w-4xl mx-auto">
           <div className="gradient-border p-2 md:p-3">
-            <div className="relative rounded-xl overflow-hidden bg-black aspect-video">
+            <div 
+              className="relative rounded-xl overflow-hidden bg-black aspect-video cursor-pointer group"
+              onClick={!isPlaying ? handlePlayClick : undefined}
+            >
               <video
                 ref={videoRef}
-                controls
+                controls={isPlaying}
                 playsInline
-                muted
                 preload="metadata"
+                onEnded={handleVideoEnd}
                 className="w-full h-full object-cover"
               >
                 <source src="/SharpMoney_1.mov" type="video/quicktime" />
                 <source src="/SharpMoney_1.mov" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
+              
+              {/* Play Button Overlay */}
+              {!isPlaying && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/40 transition-all group-hover:bg-black/30">
+                  <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-cyan/90 flex items-center justify-center transition-all group-hover:scale-110 group-hover:bg-cyan shadow-[0_0_60px_rgba(0,229,255,0.5)]">
+                    <svg className="w-12 h-12 md:w-16 md:h-16 text-black ml-2" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
           
           {/* Decorative elements */}
           <div className="absolute -top-4 -right-4 w-24 h-24 bg-cyan/20 rounded-full blur-2xl" />
           <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-blue/20 rounded-full blur-2xl" />
-        </div>
-
-        {/* Key highlights from video */}
-        <div className="mt-12 grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-          {[
-            { icon: '⚡', title: 'Fastest Engine', desc: 'Get to bets before the market adjusts' },
-            { icon: '📊', title: '20+ Sportsbooks', desc: 'Complete market coverage in one place' },
-            { icon: '🎯', title: 'One-Click Bets', desc: 'Straight to your sportsbook bet slip' },
-          ].map((item, i) => (
-            <div key={i} className="text-center p-4">
-              <div className="text-3xl mb-2">{item.icon}</div>
-              <h4 className="font-semibold text-white mb-1">{item.title}</h4>
-              <p className="text-sm text-white/50">{item.desc}</p>
-            </div>
-          ))}
         </div>
       </div>
     </section>
