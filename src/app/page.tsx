@@ -680,10 +680,12 @@ function Community() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {/* Discord */}
           <a 
-            href="#" 
+            href="https://discord.gg/b4QmzcPhTt"
+            target="_blank"
+            rel="noopener noreferrer"
             className="gradient-border p-8 flex flex-col items-center text-center hover:scale-[1.02] transition-transform duration-300 group"
           >
             <div className="w-16 h-16 bg-[#5865F2] rounded-2xl flex items-center justify-center mb-6">
@@ -694,6 +696,23 @@ function Community() {
             <h3 className="text-xl font-semibold mb-2">Discord Community</h3>
             <p className="text-white/60 mb-4">Market-specific discussions, community insights, and SharpMoney conversations.</p>
             <span className="text-cyan group-hover:underline">Join Discord →</span>
+          </a>
+
+          {/* X (Twitter) */}
+          <a 
+            href="https://x.com/BetSharpMoney"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="gradient-border p-8 flex flex-col items-center text-center hover:scale-[1.02] transition-transform duration-300 group"
+          >
+            <div className="w-16 h-16 bg-black border border-white/20 rounded-2xl flex items-center justify-center mb-6">
+              <svg className="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+            </div>
+            <h3 className="text-xl font-semibold mb-2">Follow on X</h3>
+            <p className="text-white/60 mb-4">Real-time updates, betting insights, and market analysis from the SharpMoney team.</p>
+            <span className="text-cyan group-hover:underline">Follow Us →</span>
           </a>
 
           {/* YouTube */}
@@ -763,6 +782,8 @@ function Footer() {
           <div className="flex items-center gap-6 text-white/50 text-sm">
             <a href="#features" className="hover:text-cyan transition-colors">Features</a>
             <a href="#pricing" className="hover:text-cyan transition-colors">Pricing</a>
+            <a href="https://discord.gg/b4QmzcPhTt" target="_blank" rel="noopener noreferrer" className="hover:text-cyan transition-colors">Discord</a>
+            <a href="https://x.com/BetSharpMoney" target="_blank" rel="noopener noreferrer" className="hover:text-cyan transition-colors">X</a>
             <a href="https://www.youtube.com/@BetSharpMoneyYT" target="_blank" rel="noopener noreferrer" className="hover:text-cyan transition-colors">YouTube</a>
           </div>
           
