@@ -18,10 +18,16 @@ export const metadata: Metadata = {
   title: "SharpMoney | +EV Sports Betting Tools",
   description: "Professional-grade +EV betting tools. Find value before the market moves. Sharp books, line movement data, and the fastest odds engine in the industry.",
   keywords: ["sports betting", "+EV betting", "sharp betting", "betting tools", "odds comparison", "line movement"],
+  icons: {
+    icon: "/logo.jpg",
+    shortcut: "/logo.jpg",
+    apple: "/logo.jpg",
+  },
   openGraph: {
     title: "SharpMoney | +EV Sports Betting Tools",
     description: "Stop guessing. Follow the market. Professional-grade +EV betting tools.",
     type: "website",
+    images: ["/logo.jpg"],
   },
 };
 
