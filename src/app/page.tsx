@@ -266,10 +266,22 @@ function Features() {
 function PlusEVVideo() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isReady, setIsReady] = useState(false);
+
+  const handleLoadedData = () => {
+    const video = videoRef.current;
+    if (video && !isPlaying) {
+      // Seek to 21 seconds to show as preview frame
+      video.currentTime = 21;
+      setIsReady(true);
+    }
+  };
 
   const handlePlayClick = () => {
     const video = videoRef.current;
     if (video) {
+      // Reset to beginning and play
+      video.currentTime = 0;
       video.play();
       setIsPlaying(true);
     }
@@ -277,6 +289,11 @@ function PlusEVVideo() {
 
   const handleVideoEnd = () => {
     setIsPlaying(false);
+    // Reset to preview frame
+    const video = videoRef.current;
+    if (video) {
+      video.currentTime = 21;
+    }
   };
 
   return (
@@ -315,17 +332,25 @@ function PlusEVVideo() {
                 ref={videoRef}
                 controls={isPlaying}
                 playsInline
-                preload="metadata"
+                preload="auto"
+                onLoadedData={handleLoadedData}
                 onEnded={handleVideoEnd}
-                className="w-full h-full object-cover"
+                className={`w-full h-full object-cover transition-opacity duration-300 ${isReady || isPlaying ? 'opacity-100' : 'opacity-0'}`}
               >
                 <source src="/SharpMoney_1.mov" type="video/quicktime" />
                 <source src="/SharpMoney_1.mov" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
               
+              {/* Loading state */}
+              {!isReady && !isPlaying && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black">
+                  <div className="w-8 h-8 border-2 border-cyan border-t-transparent rounded-full animate-spin" />
+                </div>
+              )}
+              
               {/* Play Button Overlay */}
-              {!isPlaying && (
+              {!isPlaying && isReady && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black/40 transition-all group-hover:bg-black/30">
                   <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-cyan/90 flex items-center justify-center transition-all group-hover:scale-110 group-hover:bg-cyan shadow-[0_0_60px_rgba(0,229,255,0.5)]">
                     <svg className="w-12 h-12 md:w-16 md:h-16 text-black ml-2" fill="currentColor" viewBox="0 0 24 24">
