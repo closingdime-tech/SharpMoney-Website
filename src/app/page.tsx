@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 
 // SharpMoney Logo Component - uses actual logo image
@@ -264,6 +264,33 @@ function Features() {
 
 // Plus EV Video Section
 function PlusEVVideo() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    const container = containerRef.current;
+    if (!video || !container) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            video.play().catch(() => {
+              // Autoplay was prevented, user will need to click play
+            });
+          } else {
+            video.pause();
+          }
+        });
+      },
+      { threshold: 0.5 } // Play when 50% of video is visible
+    );
+
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section id="plus-ev" className="py-24 md:py-32 relative overflow-hidden">
       {/* Background effects */}
@@ -290,14 +317,15 @@ function PlusEVVideo() {
         </div>
 
         {/* Video Container */}
-        <div className="relative max-w-4xl mx-auto">
+        <div className="relative max-w-4xl mx-auto" ref={containerRef}>
           <div className="gradient-border p-2 md:p-3">
             <div className="relative rounded-xl overflow-hidden bg-black aspect-video">
               <video
+                ref={videoRef}
                 controls
                 playsInline
+                muted
                 preload="metadata"
-                poster=""
                 className="w-full h-full object-cover"
               >
                 <source src="/SharpMoney_1.mov" type="video/quicktime" />
