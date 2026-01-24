@@ -3,6 +3,11 @@
 import { useState, useRef } from 'react';
 import Image from 'next/image';
 
+// ===========================================
+// SET TO TRUE WHEN PRODUCTS ARE READY TO LAUNCH
+const IS_LAUNCHED = false;
+// ===========================================
+
 // SharpMoney Logo Component - uses actual logo image
 function Logo({ className = "w-48" }: { className?: string }) {
   return (
@@ -34,14 +39,20 @@ function Nav() {
           <a href="#pricing" className="text-white/70 hover:text-cyan transition-colors">Pricing</a>
           <a href="#signal" className="text-white/70 hover:text-cyan transition-colors">Signal</a>
           <a href="#community" className="text-white/70 hover:text-cyan transition-colors">Community</a>
-          <a 
-            href="https://whop.com/sharpmoney/pro-7e/" 
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-cyan text-black font-semibold px-6 py-2 rounded-lg hover:bg-cyan-dim transition-colors"
-          >
-            Get Started
-          </a>
+          {IS_LAUNCHED ? (
+            <a 
+              href="https://whop.com/sharpmoney/pro-7e/" 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-cyan text-black font-semibold px-6 py-2 rounded-lg hover:bg-cyan-dim transition-colors"
+            >
+              Get Started
+            </a>
+          ) : (
+            <span className="bg-cyan/50 text-black/70 font-semibold px-6 py-2 rounded-lg cursor-default">
+              Coming Soon
+            </span>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -66,14 +77,20 @@ function Nav() {
           <a href="#pricing" className="text-white/70 hover:text-cyan transition-colors py-2">Pricing</a>
           <a href="#signal" className="text-white/70 hover:text-cyan transition-colors py-2">Signal</a>
           <a href="#community" className="text-white/70 hover:text-cyan transition-colors py-2">Community</a>
-          <a 
-            href="https://whop.com/sharpmoney/pro-7e/" 
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-cyan text-black font-semibold px-6 py-3 rounded-lg text-center hover:bg-cyan-dim transition-colors"
-          >
-            Get Started
-          </a>
+          {IS_LAUNCHED ? (
+            <a 
+              href="https://whop.com/sharpmoney/pro-7e/" 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-cyan text-black font-semibold px-6 py-3 rounded-lg text-center hover:bg-cyan-dim transition-colors"
+            >
+              Get Started
+            </a>
+          ) : (
+            <span className="bg-cyan/50 text-black/70 font-semibold px-6 py-3 rounded-lg text-center cursor-default">
+              Coming Soon
+            </span>
+          )}
         </div>
       )}
     </nav>
@@ -125,14 +142,20 @@ function Hero() {
         </p>
 
         <div className="opacity-0 animate-fade-in-up animation-delay-400 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a 
-            href="https://whop.com/sharpmoney/pro-7e/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-cyan text-black font-bold text-lg px-10 py-4 rounded-lg hover:bg-cyan-dim transition-all pulse-glow"
-          >
-            Start Winning Today
-          </a>
+          {IS_LAUNCHED ? (
+            <a 
+              href="https://whop.com/sharpmoney/pro-7e/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-cyan text-black font-bold text-lg px-10 py-4 rounded-lg hover:bg-cyan-dim transition-all pulse-glow"
+            >
+              Start Winning Today
+            </a>
+          ) : (
+            <span className="bg-cyan/50 text-black/70 font-bold text-lg px-10 py-4 rounded-lg cursor-default">
+              Launching Soon
+            </span>
+          )}
           <a 
             href="#features"
             className="border border-white/20 text-white font-semibold text-lg px-10 py-4 rounded-lg hover:border-cyan hover:text-cyan transition-all"
@@ -456,19 +479,27 @@ function Pricing() {
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">
-          {plans.map((plan, i) => (
-            <a 
+          {plans.map((plan, i) => {
+            const CardWrapper = IS_LAUNCHED ? 'a' : 'div';
+            const cardProps = IS_LAUNCHED ? {
+              href: plan.href,
+              target: "_blank",
+              rel: "noopener noreferrer",
+            } : {};
+            
+            return (
+            <CardWrapper 
               key={i}
-              href={plan.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`relative rounded-2xl p-8 block cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:-translate-y-2 ${
+              {...cardProps}
+              className={`relative rounded-2xl p-8 block transition-all duration-300 ${
+                IS_LAUNCHED ? 'cursor-pointer hover:scale-[1.03] hover:-translate-y-2' : 'cursor-default'
+              } ${
                 plan.gold
-                  ? 'bg-gradient-to-b from-yellow-500/20 to-transparent border-2 border-yellow-500 shadow-[0_0_40px_rgba(234,179,8,0.3)] hover:shadow-[0_0_60px_rgba(234,179,8,0.5)]'
+                  ? `bg-gradient-to-b from-yellow-500/20 to-transparent border-2 border-yellow-500 shadow-[0_0_40px_rgba(234,179,8,0.3)] ${IS_LAUNCHED ? 'hover:shadow-[0_0_60px_rgba(234,179,8,0.5)]' : ''}`
                   : plan.popular 
-                    ? 'bg-gradient-to-b from-cyan/10 to-transparent border-2 border-cyan glow-cyan hover:shadow-[0_0_60px_rgba(0,229,255,0.5)]' 
+                    ? `bg-gradient-to-b from-cyan/10 to-transparent border-2 border-cyan glow-cyan ${IS_LAUNCHED ? 'hover:shadow-[0_0_60px_rgba(0,229,255,0.5)]' : ''}` 
                     : plan.basics
-                      ? 'bg-card-bg border-2 border-gray-500 hover:border-gray-400 hover:shadow-[0_0_30px_rgba(156,163,175,0.2)]'
+                      ? `bg-card-bg border-2 border-gray-500 ${IS_LAUNCHED ? 'hover:border-gray-400 hover:shadow-[0_0_30px_rgba(156,163,175,0.2)]' : ''}`
                       : 'bg-card-bg border border-card-border'
               }`}
             >
@@ -523,12 +554,12 @@ function Pricing() {
                     : plan.popular
                       ? 'bg-cyan text-black'
                       : 'bg-white/10 text-white'
-                }`}
+                } ${!IS_LAUNCHED ? 'opacity-70' : ''}`}
               >
-                {plan.cta}
+                {IS_LAUNCHED ? plan.cta : 'Coming Soon'}
               </div>
-            </a>
-          ))}
+            </CardWrapper>
+          )})}
         </div>
       </div>
     </section>
@@ -671,17 +702,23 @@ function Signal() {
             <p className="text-white/60 mb-6">
               SharpMoney Signal is exclusively available in the Alpha package.
             </p>
-            <a 
-              href="https://whop.com/sharpmoney/alpha-4e/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-cyan text-black font-bold px-8 py-4 rounded-lg hover:bg-cyan-dim transition-all"
-            >
-              Unlock Signal Access
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </a>
+            {IS_LAUNCHED ? (
+              <a 
+                href="https://whop.com/sharpmoney/alpha-4e/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-cyan text-black font-bold px-8 py-4 rounded-lg hover:bg-cyan-dim transition-all"
+              >
+                Unlock Signal Access
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </a>
+            ) : (
+              <span className="inline-flex items-center gap-2 bg-cyan/50 text-black/70 font-bold px-8 py-4 rounded-lg cursor-default">
+                Coming Soon
+              </span>
+            )}
           </div>
         </div>
       </div>
@@ -777,17 +814,23 @@ function CTA() {
         <p className="text-lg text-white/60 mb-10 max-w-2xl mx-auto">
           Join thousands of bettors using SharpMoney to find real value every day.
         </p>
-        <a 
-          href="https://whop.com/sharpmoney/pro-7e/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-3 bg-cyan text-black font-bold text-xl px-12 py-5 rounded-lg hover:bg-cyan-dim transition-all pulse-glow"
-        >
-          Get Started Now
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </svg>
-        </a>
+        {IS_LAUNCHED ? (
+          <a 
+            href="https://whop.com/sharpmoney/pro-7e/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-3 bg-cyan text-black font-bold text-xl px-12 py-5 rounded-lg hover:bg-cyan-dim transition-all pulse-glow"
+          >
+            Get Started Now
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
+        ) : (
+          <span className="inline-flex items-center gap-3 bg-cyan/50 text-black/70 font-bold text-xl px-12 py-5 rounded-lg cursor-default">
+            Launching Soon
+          </span>
+        )}
       </div>
     </section>
   );
