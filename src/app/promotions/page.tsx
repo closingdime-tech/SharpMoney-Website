@@ -47,6 +47,7 @@ const offers = [
     ],
     ctaText: 'Get 10% Off Pikkit Pro',
     ctaLink: 'https://app.pikkit.com/subscribe?ref=SHARPMONEY',
+    videoLink: 'https://www.youtube.com/watch?v=-ta0_vnGXdM',
     featured: false,
   },
 ];
