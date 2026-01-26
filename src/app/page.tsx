@@ -39,6 +39,7 @@ function Nav() {
           <a href="#pricing" className="text-white/70 hover:text-cyan transition-colors">Pricing</a>
           <a href="#signal" className="text-white/70 hover:text-cyan transition-colors">Signal</a>
           <a href="#community" className="text-white/70 hover:text-cyan transition-colors">Community</a>
+          <a href="/promotions" className="text-white/70 hover:text-cyan transition-colors">Promos</a>
           {IS_LAUNCHED ? (
             <a 
               href="https://whop.com/sharpmoney/pro-7e/" 
@@ -77,6 +78,7 @@ function Nav() {
           <a href="#pricing" className="text-white/70 hover:text-cyan transition-colors py-2">Pricing</a>
           <a href="#signal" className="text-white/70 hover:text-cyan transition-colors py-2">Signal</a>
           <a href="#community" className="text-white/70 hover:text-cyan transition-colors py-2">Community</a>
+          <a href="/promotions" className="text-white/70 hover:text-cyan transition-colors py-2">Promos</a>
           {IS_LAUNCHED ? (
             <a 
               href="https://whop.com/sharpmoney/pro-7e/" 
@@ -850,6 +852,7 @@ function Footer() {
           <div className="flex items-center gap-6 text-white/50 text-sm">
             <a href="#features" className="hover:text-cyan transition-colors">Features</a>
             <a href="#pricing" className="hover:text-cyan transition-colors">Pricing</a>
+            <a href="/promotions" className="hover:text-cyan transition-colors">Promos</a>
             <a href="https://discord.gg/b4QmzcPhTt" target="_blank" rel="noopener noreferrer" className="hover:text-cyan transition-colors">Discord</a>
             <a href="https://x.com/BetSharpMoney" target="_blank" rel="noopener noreferrer" className="hover:text-cyan transition-colors">X</a>
             <a href="https://www.youtube.com/@BetSharpMoneyYT" target="_blank" rel="noopener noreferrer" className="hover:text-cyan transition-colors">YouTube</a>
