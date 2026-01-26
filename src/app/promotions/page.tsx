@@ -6,6 +6,28 @@ import Link from 'next/link';
 // Promotion/Partnership offers - add new offers here
 const offers = [
   {
+    id: 'novig',
+    name: 'NoVig',
+    logo: '/promotions/NoVig logo(1) (1).png',
+    offer: '10% Deposit Bonus up to $100',
+    description: 'A revolutionary betting exchange with 0% fees on all transactions. Deposit $900, get $1000 to trade with! Our SharpMoney +EV bots find hundreds of +EV plays on NoVig every day.',
+    highlights: [
+      { icon: '❌', text: 'Zero Fees – No transaction fees, every dollar works harder for you' },
+      { icon: '↔️', text: 'Trading Opportunities – Access to wider range of markets and plays' },
+      { icon: '📊', text: 'Real-Time Data – Live market data and insights from our +EV bots' },
+      { icon: '🤖', text: 'SharpMoney +EV Bots – Hundreds of +EV plays found daily on NoVig' },
+    ],
+    details: [
+      'Use promo code "SharpMoney"',
+      '10% bonus on first deposit (up to $100)',
+      '0% transaction fees',
+    ],
+    ctaText: 'Claim Your Bonus',
+    ctaLink: 'https://novig.onelink.me/JHQQ/cw47x45a',
+    videoLink: 'https://youtu.be/sOwovIO-aCU?si=rQjsMR_OyJDy6wax',
+    featured: true,
+  },
+  {
     id: 'pikkit-pro',
     name: 'Pikkit Pro',
     logo: '/promotions/Pikkit Logo.webp',
@@ -25,7 +47,7 @@ const offers = [
     ],
     ctaText: 'Get 10% Off Pikkit Pro',
     ctaLink: 'https://app.pikkit.com/subscribe?ref=SHARPMONEY',
-    featured: true,
+    featured: false,
   },
 ];
 
@@ -99,17 +121,32 @@ function OfferCard({ offer }: { offer: typeof offers[0] }) {
             </ul>
           )}
           
-          <a
-            href={offer.ctaLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-cyan text-black font-bold px-8 py-4 rounded-lg hover:bg-cyan-dim transition-all flex-shrink-0"
-          >
-            {offer.ctaText}
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-            </svg>
-          </a>
+          <div className="flex flex-col sm:flex-row gap-3 flex-shrink-0">
+            <a
+              href={offer.ctaLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 bg-cyan text-black font-bold px-8 py-4 rounded-lg hover:bg-cyan-dim transition-all"
+            >
+              {offer.ctaText}
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+            {offer.videoLink && (
+              <a
+                href={offer.videoLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 bg-red-600 text-white font-bold px-6 py-4 rounded-lg hover:bg-red-500 transition-all"
+              >
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                </svg>
+                Watch Video
+              </a>
+            )}
+          </div>
         </div>
       </div>
     </div>
