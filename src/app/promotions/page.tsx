@@ -5,57 +5,89 @@ import Link from 'next/link';
 
 // Promotion/Partnership offers - add new offers here
 const offers = [
-  // {
-  //   id: 'example',
-  //   name: 'Example Sportsbook',
-  //   logo: '/promotions/example-logo.png',
-  //   offer: '10% Deposit Bonus',
-  //   description: 'Get 10% extra on your first deposit up to $500.',
-  //   details: [
-  //     'New customers only',
-  //     'Minimum deposit $50',
-  //     'Bonus code: SHARPMONEY',
-  //   ],
-  //   ctaText: 'Claim Offer',
-  //   ctaLink: 'https://example.com/promo',
-  //   featured: true,
-  // },
+  {
+    id: 'pikkit-pro',
+    name: 'Pikkit Pro',
+    logo: '/promotions/Pikkit Logo.webp',
+    offer: '10% OFF with code SHARPMONEY',
+    description: 'The ultimate bet tracking app for serious sports bettors. Track your bets, analyze your performance, fix leaks, and actually know your numbers.',
+    highlights: [
+      { icon: '📊', text: 'Comprehensive Analytics – Dissect betting patterns with detailed stats' },
+      { icon: '⏰', text: 'Real-Time Tracking – Instant updates on wins and losses' },
+      { icon: '🚨', text: 'Custom Alerts – Get notified about market changes and opportunities' },
+      { icon: '💬', text: 'Community Insights – Connect with like-minded bettors' },
+      { icon: '🔐', text: 'Secure & Private – State-of-the-art encryption' },
+    ],
+    details: [
+      'Use code SHARPMONEY at checkout',
+      'Sign up via website only (not the app)',
+      'Works on iOS, Android, and Web',
+    ],
+    ctaText: 'Get 10% Off Pikkit Pro',
+    ctaLink: 'https://app.pikkit.com/subscribe?ref=SHARPMONEY',
+    featured: true,
+  },
 ];
 
 function OfferCard({ offer }: { offer: typeof offers[0] }) {
   return (
-    <div className={`relative rounded-2xl p-6 md:p-8 bg-card-bg border ${
+    <div className={`relative rounded-2xl overflow-hidden bg-card-bg border ${
       offer.featured 
         ? 'border-cyan shadow-[0_0_30px_rgba(0,229,255,0.2)]' 
         : 'border-card-border'
     }`}>
       {offer.featured && (
-        <div className="absolute -top-3 left-6 bg-cyan text-black text-xs font-bold px-3 py-1 rounded-full">
-          FEATURED
+        <div className="absolute top-4 right-4 bg-cyan text-black text-xs font-bold px-3 py-1 rounded-full z-10">
+          FEATURED PARTNER
         </div>
       )}
       
-      <div className="flex flex-col md:flex-row gap-6 items-start">
-        {/* Logo */}
-        <div className="w-24 h-24 md:w-32 md:h-32 bg-white rounded-xl flex items-center justify-center p-4 flex-shrink-0">
-          <Image
-            src={offer.logo}
-            alt={offer.name}
-            width={100}
-            height={100}
-            className="object-contain"
-          />
-        </div>
-        
-        {/* Content */}
-        <div className="flex-1">
-          <h3 className="text-xl md:text-2xl font-bold mb-1">{offer.name}</h3>
-          <div className="text-cyan text-lg md:text-xl font-semibold mb-3">{offer.offer}</div>
-          <p className="text-white/70 mb-4">{offer.description}</p>
+      {/* Header with logo and main offer */}
+      <div className="p-6 md:p-8 bg-gradient-to-r from-card-bg to-cyan/5">
+        <div className="flex flex-col md:flex-row gap-6 items-center md:items-start">
+          {/* Logo */}
+          <div className="w-28 h-28 md:w-36 md:h-36 bg-white rounded-2xl flex items-center justify-center p-4 flex-shrink-0 shadow-lg">
+            <Image
+              src={offer.logo}
+              alt={offer.name}
+              width={120}
+              height={120}
+              className="object-contain"
+            />
+          </div>
           
+          {/* Main info */}
+          <div className="flex-1 text-center md:text-left">
+            <h3 className="text-2xl md:text-3xl font-bold mb-2">{offer.name}</h3>
+            <div className="inline-block bg-green-500/20 border border-green-500/50 text-green-400 text-lg md:text-xl font-bold px-4 py-2 rounded-lg mb-4">
+              {offer.offer}
+            </div>
+            <p className="text-white/70 text-lg">{offer.description}</p>
+          </div>
+        </div>
+      </div>
+      
+      {/* Highlights */}
+      {offer.highlights && offer.highlights.length > 0 && (
+        <div className="px-6 md:px-8 py-6 border-t border-white/5">
+          <h4 className="text-sm font-semibold text-white/50 uppercase tracking-wide mb-4">What You Get</h4>
+          <div className="grid md:grid-cols-2 gap-3">
+            {offer.highlights.map((highlight, i) => (
+              <div key={i} className="flex items-start gap-3 bg-white/5 rounded-lg p-3">
+                <span className="text-xl">{highlight.icon}</span>
+                <span className="text-white/80 text-sm">{highlight.text}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+      
+      {/* Details and CTA */}
+      <div className="px-6 md:px-8 py-6 border-t border-white/5 bg-black/30">
+        <div className="flex flex-col md:flex-row gap-6 items-center justify-between">
           {/* Details list */}
           {offer.details && offer.details.length > 0 && (
-            <ul className="space-y-2 mb-6">
+            <ul className="flex flex-wrap gap-x-6 gap-y-2">
               {offer.details.map((detail, i) => (
                 <li key={i} className="flex items-center gap-2 text-sm text-white/60">
                   <svg className="w-4 h-4 text-cyan flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -71,10 +103,10 @@ function OfferCard({ offer }: { offer: typeof offers[0] }) {
             href={offer.ctaLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-cyan text-black font-semibold px-6 py-3 rounded-lg hover:bg-cyan-dim transition-all"
+            className="inline-flex items-center gap-2 bg-cyan text-black font-bold px-8 py-4 rounded-lg hover:bg-cyan-dim transition-all flex-shrink-0"
           >
             {offer.ctaText}
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
             </svg>
           </a>
