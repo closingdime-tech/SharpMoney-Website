@@ -265,12 +265,75 @@ export default function PromotionsPage() {
             SharpMoney Discounts
           </h2>
           
-          <div className="text-center py-10 bg-card-bg border border-card-border rounded-2xl">
-            <div className="text-3xl mb-3">🏷️</div>
-            <h3 className="text-lg font-semibold mb-2 text-white/80">No Current Discounts</h3>
-            <p className="text-white/50 text-sm">
-              There are no active discounts on SharpMoney products right now. Check back soon!
-            </p>
+          {/* LAUNCH25 Promo */}
+          <div className="relative rounded-2xl overflow-hidden bg-gradient-to-r from-cyan/20 via-blue-500/20 to-cyan/20 border-2 border-cyan shadow-[0_0_40px_rgba(0,229,255,0.3)]">
+            <div className="absolute top-4 right-4 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full animate-pulse">
+              LIMITED TIME
+            </div>
+            
+            <div className="p-8 text-center">
+              <div className="inline-block bg-cyan text-black text-sm font-bold px-4 py-2 rounded-full mb-4">
+                🎉 LAUNCH SPECIAL
+              </div>
+              
+              <h3 className="text-3xl md:text-4xl font-bold mb-3">
+                25% OFF Your First Month
+              </h3>
+              
+              <p className="text-white/70 text-lg mb-6 max-w-xl mx-auto">
+                Get started with SharpMoney at a discount. Use code <span className="text-cyan font-bold">LAUNCH25</span> at checkout on any plan.
+              </p>
+              
+              <div className="inline-flex items-center gap-2 bg-black/50 border border-white/20 text-white font-mono text-2xl px-6 py-3 rounded-lg mb-8">
+                <span className="text-white/50 text-base">Code:</span>
+                LAUNCH25
+              </div>
+              
+              {/* Product Links */}
+              <div className="grid md:grid-cols-3 gap-4 max-w-2xl mx-auto">
+                <a 
+                  href="https://whop.com/sharpmoney/core-ae/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl p-4 transition-all hover:scale-105"
+                >
+                  <div className="text-sm text-white/50 mb-1">Core</div>
+                  <div className="flex items-center justify-center gap-2">
+                    <span className="text-white/40 line-through text-sm">$29.99</span>
+                    <span className="text-cyan font-bold text-xl">$22.49</span>
+                  </div>
+                  <div className="text-xs text-white/40 mt-1">first month</div>
+                </a>
+                
+                <a 
+                  href="https://whop.com/sharpmoney/pro-7e/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-cyan/20 hover:bg-cyan/30 border-2 border-cyan rounded-xl p-4 transition-all hover:scale-105"
+                >
+                  <div className="text-sm text-cyan mb-1">Pro ⭐</div>
+                  <div className="flex items-center justify-center gap-2">
+                    <span className="text-white/40 line-through text-sm">$79.99</span>
+                    <span className="text-cyan font-bold text-xl">$59.99</span>
+                  </div>
+                  <div className="text-xs text-white/40 mt-1">first month</div>
+                </a>
+                
+                <a 
+                  href="https://whop.com/sharpmoney/alpha-4e/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-yellow-500/20 hover:bg-yellow-500/30 border-2 border-yellow-500 rounded-xl p-4 transition-all hover:scale-105"
+                >
+                  <div className="text-sm text-yellow-500 mb-1">Alpha ⚡</div>
+                  <div className="flex items-center justify-center gap-2">
+                    <span className="text-white/40 line-through text-sm">$199.99</span>
+                    <span className="text-yellow-500 font-bold text-xl">$149.99</span>
+                  </div>
+                  <div className="text-xs text-white/40 mt-1">first month</div>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </section>
