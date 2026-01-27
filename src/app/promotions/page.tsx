@@ -281,7 +281,7 @@ export default function PromotionsPage() {
               </h3>
               
               <p className="text-white/70 text-lg mb-6 max-w-xl mx-auto">
-                Get started with SharpMoney at a discount. Use code <span className="text-cyan font-bold">LAUNCH25</span> at checkout on any plan.
+                Get started with SharpMoney Pro or Alpha at a discount. Use code <span className="text-cyan font-bold">LAUNCH25</span> at checkout.
               </p>
               
               <div className="inline-flex items-center gap-2 bg-black/50 border border-white/20 text-white font-mono text-2xl px-6 py-3 rounded-lg mb-8">
@@ -295,14 +295,13 @@ export default function PromotionsPage() {
                   href="https://whop.com/sharpmoney/core-ae/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl p-4 transition-all hover:scale-105"
+                  className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl p-4 transition-all hover:scale-105 opacity-70"
                 >
                   <div className="text-sm text-white/50 mb-1">Core</div>
                   <div className="flex items-center justify-center gap-2">
-                    <span className="text-white/40 line-through text-sm">$29.99</span>
-                    <span className="text-cyan font-bold text-xl">$22.49</span>
+                    <span className="text-white/70 font-bold text-xl">$29.99</span>
                   </div>
-                  <div className="text-xs text-white/40 mt-1">first month</div>
+                  <div className="text-xs text-white/40 mt-1">no discount</div>
                 </a>
                 
                 <a 
