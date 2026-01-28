@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 // ===========================================
 // SET TO TRUE WHEN PRODUCTS ARE READY TO LAUNCH
-const IS_LAUNCHED = false;
+const IS_LAUNCHED = true;
 // ===========================================
 
 // SharpMoney Logo Component - uses actual logo image
