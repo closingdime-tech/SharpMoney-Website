@@ -289,49 +289,129 @@ export default function PromotionsPage() {
                 LAUNCH25
               </div>
               
-              {/* Product Links */}
-              <div className="grid md:grid-cols-3 gap-4 max-w-2xl mx-auto">
-                <a 
-                  href="https://whop.com/sharpmoney/core-ae/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl p-4 transition-all hover:scale-105 opacity-70"
-                >
-                  <div className="text-sm text-white/50 mb-1">Core</div>
-                  <div className="flex items-center justify-center gap-2">
-                    <span className="text-white/70 font-bold text-xl">$29.99</span>
-                  </div>
-                  <div className="text-xs text-white/40 mt-1">no discount</div>
-                </a>
-                
-                <a 
-                  href="https://whop.com/sharpmoney/pro-7e/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-cyan/20 hover:bg-cyan/30 border-2 border-cyan rounded-xl p-4 transition-all hover:scale-105"
-                >
-                  <div className="text-sm text-cyan mb-1">Pro ⭐</div>
-                  <div className="flex items-center justify-center gap-2">
-                    <span className="text-white/40 line-through text-sm">$79.99</span>
-                    <span className="text-cyan font-bold text-xl">$59.99</span>
-                  </div>
-                  <div className="text-xs text-white/40 mt-1">first month</div>
-                </a>
-                
-                <a 
-                  href="https://whop.com/sharpmoney/alpha-4e/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-yellow-500/20 hover:bg-yellow-500/30 border-2 border-yellow-500 rounded-xl p-4 transition-all hover:scale-105"
-                >
-                  <div className="text-sm text-yellow-500 mb-1">Alpha ⚡</div>
-                  <div className="flex items-center justify-center gap-2">
-                    <span className="text-white/40 line-through text-sm">$199.99</span>
-                    <span className="text-yellow-500 font-bold text-xl">$149.99</span>
-                  </div>
-                  <div className="text-xs text-white/40 mt-1">first month</div>
-                </a>
+            </div>
+          </div>
+          
+          {/* Full Product Cards */}
+          <div className="grid lg:grid-cols-3 gap-6 mt-8">
+            {/* Core */}
+            <div className="relative rounded-2xl p-6 bg-card-bg border-2 border-gray-500 opacity-80">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gray-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                NO DISCOUNT
               </div>
+              
+              <div className="mb-4 pt-2">
+                <h3 className="text-xl font-bold mb-2">Core</h3>
+                <div className="flex items-baseline gap-1 mb-2">
+                  <span className="text-3xl font-bold">$29.99</span>
+                  <span className="text-white/50">/month</span>
+                </div>
+                <p className="text-white/60 text-sm">Perfect for beginners learning +EV betting</p>
+              </div>
+
+              <ul className="space-y-2 mb-6 text-sm">
+                {['Core +EV tool access', 'Basic odds screen', 'Basic filters (sportsbook, EV %, league)', 'Community access'].map((feature, j) => (
+                  <li key={j} className="flex items-start gap-2">
+                    <svg className="w-4 h-4 text-cyan flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="text-white/70">{feature}</span>
+                  </li>
+                ))}
+                {['Sharp sportsbooks', 'Line movement charts', 'Advanced filters'].map((feature, j) => (
+                  <li key={j} className="flex items-start gap-2 opacity-40">
+                    <svg className="w-4 h-4 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <a 
+                href="https://whop.com/sharpmoney/core-ae/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full text-center py-3 rounded-lg font-semibold bg-white/10 text-white hover:bg-white/20 transition-all"
+              >
+                Start with Core
+              </a>
+            </div>
+
+            {/* Pro */}
+            <div className="relative rounded-2xl p-6 bg-gradient-to-b from-cyan/10 to-transparent border-2 border-cyan shadow-[0_0_30px_rgba(0,229,255,0.3)]">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-cyan text-black text-xs font-bold px-3 py-1 rounded-full">
+                25% OFF FIRST MONTH
+              </div>
+              
+              <div className="mb-4 pt-2">
+                <h3 className="text-xl font-bold mb-2">Pro</h3>
+                <div className="flex items-baseline gap-2 mb-1 flex-wrap">
+                  <span className="text-xl text-white/40 line-through">$79.99</span>
+                  <span className="text-3xl font-bold text-green-400">$59.99</span>
+                  <span className="text-white/50">/first month</span>
+                </div>
+                <div className="text-xs text-green-400 mb-2">Then $79.99/mo</div>
+                <p className="text-white/60 text-sm">For bettors who want professional-grade data</p>
+              </div>
+
+              <ul className="space-y-2 mb-6 text-sm">
+                {['Full +EV opportunity feed', 'Live odds from 20+ sportsbooks', '3 sharp books (true market pricing)', '4 exchanges + 2 prediction markets', 'Line movement charts & history', '30-day historical data', 'Kelly Criterion sizing', 'Deep links to bet slips', 'Advanced filters'].map((feature, j) => (
+                  <li key={j} className="flex items-start gap-2">
+                    <svg className="w-4 h-4 text-cyan flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="text-white/70">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <a 
+                href="https://whop.com/sharpmoney/pro-7e/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full text-center py-3 rounded-lg font-semibold bg-cyan text-black hover:bg-cyan-dim transition-all"
+              >
+                Get Pro Access
+              </a>
+            </div>
+
+            {/* Alpha */}
+            <div className="relative rounded-2xl p-6 bg-gradient-to-b from-yellow-500/20 to-transparent border-2 border-yellow-500 shadow-[0_0_30px_rgba(234,179,8,0.3)]">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-yellow-500 to-yellow-600 text-black text-xs font-bold px-3 py-1 rounded-full">
+                25% OFF FIRST MONTH
+              </div>
+              
+              <div className="mb-4 pt-2">
+                <h3 className="text-xl font-bold mb-2">Alpha</h3>
+                <div className="flex items-baseline gap-2 mb-1 flex-wrap">
+                  <span className="text-xl text-white/40 line-through">$199.99</span>
+                  <span className="text-3xl font-bold text-green-400">$149.99</span>
+                  <span className="text-white/50">/first month</span>
+                </div>
+                <div className="text-xs text-green-400 mb-2">Then $199.99/mo</div>
+                <p className="text-white/60 text-sm">Maximum edge with zero limitations</p>
+              </div>
+
+              <ul className="space-y-2 mb-6 text-sm">
+                {['Everything in Pro', 'SharpMoney Signal (proprietary)', 'Professional handicapped plays', 'Signal strength bars & player prop signals', 'Per-book custom EV thresholds', 'Per-period EV and limit overrides', 'Unlimited historical data', 'All future add-ons included', 'Priority support & early access'].map((feature, j) => (
+                  <li key={j} className="flex items-start gap-2">
+                    <svg className="w-4 h-4 text-cyan flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="text-white/70">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <a 
+                href="https://whop.com/sharpmoney/alpha-4e/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full text-center py-3 rounded-lg font-semibold bg-gradient-to-r from-yellow-500 to-yellow-600 text-black hover:from-yellow-400 hover:to-yellow-500 transition-all"
+              >
+                Go Alpha
+              </a>
             </div>
           </div>
         </div>
