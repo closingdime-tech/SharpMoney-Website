@@ -2,6 +2,30 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
+
+const memberResults = [
+  { src: '/results/matt.webp', name: 'Matt', profit: '+$45,163.95', roi: '+9.13%' },
+  { src: '/results/johnny-updated.webp', name: 'Johnny', profit: '+$42,242.36', roi: '+6.33%' },
+  { src: '/results/ckressin.webp', name: 'CKressin', profit: '+$30,410.07', roi: '+3.18%' },
+  { src: '/results/doc.webp', name: 'Doc', profit: '+$17,463.88', roi: '+3.28%' },
+  { src: '/results/greg.webp', name: 'Greg', profit: '+$15,870.01', roi: '+6.54%' },
+  { src: '/results/sprii.jpg', name: 'Sprii', profit: '+$11,452.94', roi: '+16.69%' },
+  { src: '/results/andrew.webp', name: 'Andrew', profit: '+$10,069.09', roi: '+2.54%' },
+  { src: '/results/mooky.webp', name: 'Mooky', profit: '+$9,162.60', roi: '+5.01%' },
+  { src: '/results/nobby.webp', name: 'Nobby', profit: '+$8,236.74', roi: '+3.56%' },
+  { src: '/results/ry.jpg', name: 'Ry', profit: '+$8,256.19', roi: '+4.19%' },
+  { src: '/results/tbone.webp', name: 'tbone', profit: '+$8,079.62', roi: '+1.75%' },
+  { src: '/results/jeremy.webp', name: 'Jeremy', profit: '+$6,309.36', roi: '+1.89%' },
+  { src: '/results/devin.jpg', name: 'Devin', profit: '+$5,358.26', roi: '+2.99%' },
+  { src: '/results/nate.webp', name: 'Nate', profit: '+$5,184.40', roi: '+2.46%' },
+  { src: '/results/riggs.webp', name: 'Riggs', profit: '+$5,090.93', roi: '+9.95%' },
+  { src: '/results/sniper.webp', name: 'The Sniper', profit: '+$4,989.83', roi: '+6.97%' },
+  { src: '/results/jtn28.webp', name: 'jtn28', profit: '+$5,007.11', roi: '+4.84%' },
+  { src: '/results/ben.webp', name: 'Ben', profit: '+$2,021.45', roi: '+19.60%' },
+  { src: '/results/bluexena.jpg', name: 'Bluexena', profit: '+$1,558.92', roi: '+3.68%' },
+  { src: '/results/moneydish.webp', name: 'Moneydish', profit: '+$1,036.34', roi: '+4.83%' },
+];
 
 const reviews = [
   {
@@ -118,7 +142,113 @@ function ReviewCard({ review }: { review: typeof reviews[0] }) {
   );
 }
 
-export default function ReviewsPage() {
+function MemberResults() {
+  const [lightboxImg, setLightboxImg] = useState<string | null>(null);
+  const [showAll, setShowAll] = useState(false);
+  const visibleResults = showAll ? memberResults : memberResults.slice(0, 6);
+
+  return (
+    <>
+      <section className="pb-20 px-6">
+        <div className="max-w-5xl mx-auto">
+          {/* Results Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {visibleResults.map((result, i) => (
+              <button
+                key={i}
+                onClick={() => setLightboxImg(result.src)}
+                className="group relative bg-card-bg border border-card-border rounded-2xl overflow-hidden hover:border-green-500/30 transition-all duration-300 hover:shadow-[0_0_25px_rgba(34,197,94,0.15)] cursor-pointer"
+              >
+                {/* Image */}
+                <div className="relative aspect-[4/5] w-full">
+                  <Image
+                    src={result.src}
+                    alt={`${result.name}'s profit chart`}
+                    fill
+                    className="object-cover group-hover:scale-[1.02] transition-transform duration-300"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
+                  {/* Hover overlay */}
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
+                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/10 backdrop-blur-sm rounded-full p-3">
+                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Info bar */}
+                <div className="p-4 flex items-center justify-between">
+                  <span className="text-white font-semibold">{result.name}</span>
+                  <div className="flex items-center gap-3">
+                    <span className="text-green-400 font-bold text-sm">{result.profit}</span>
+                    <span className="text-xs text-white/40 bg-white/5 px-2 py-1 rounded-full">{result.roi} ROI</span>
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+
+          {/* Show More / Show Less */}
+          {memberResults.length > 6 && (
+            <div className="text-center mt-10">
+              <button
+                onClick={() => setShowAll(!showAll)}
+                className="inline-flex items-center gap-2 bg-white/5 border border-white/10 hover:border-green-500/30 text-white/70 hover:text-green-400 font-semibold px-8 py-3 rounded-xl transition-all duration-300"
+              >
+                {showAll ? 'Show Less' : `Show All ${memberResults.length} Results`}
+                <svg
+                  className={`w-4 h-4 transition-transform duration-300 ${showAll ? 'rotate-180' : ''}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Lightbox Modal */}
+      {lightboxImg && (
+        <div
+          className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 cursor-pointer"
+          onClick={() => setLightboxImg(null)}
+        >
+          {/* Close button */}
+          <button
+            onClick={() => setLightboxImg(null)}
+            className="absolute top-6 right-6 text-white/70 hover:text-white transition-colors z-10"
+          >
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+
+          {/* Expanded image */}
+          <div
+            className="relative max-w-lg w-full max-h-[85vh] aspect-[4/5]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Image
+              src={lightboxImg}
+              alt="Member result"
+              fill
+              className="object-contain rounded-xl"
+              sizes="(max-width: 768px) 95vw, 512px"
+              priority
+            />
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+export default function ResultsPage() {
   return (
     <div className="min-h-screen bg-black">
       {/* Navigation */}
@@ -149,21 +279,23 @@ export default function ReviewsPage() {
 
       {/* Header */}
       <section className="pt-32 pb-16 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-cyan/5 via-transparent to-transparent" />
-        <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-cyan/10 rounded-full blur-[120px]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-green-500/5 via-transparent to-transparent" />
+        <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-green-500/10 rounded-full blur-[120px]" />
 
         <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
-          <div className="inline-flex items-center gap-2 bg-cyan/10 border border-cyan/30 text-cyan text-sm font-semibold px-4 py-2 rounded-full mb-6">
-            <span className="text-yellow-400">★★★★★</span>
-            4.9 AVERAGE RATING
+          <div className="inline-flex items-center gap-2 bg-green-500/10 border border-green-500/30 text-green-400 text-sm font-semibold px-4 py-2 rounded-full mb-6">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+            </svg>
+            VERIFIED ON PIKKIT
           </div>
 
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-            What Our <span className="bg-gradient-to-r from-cyan to-blue-500 bg-clip-text text-transparent">Members</span> Say
+            Proven <span className="bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">Results</span>
           </h1>
 
           <p className="text-lg md:text-xl text-white/60 max-w-2xl mx-auto">
-            Don&apos;t just take our word for it. Hear from real SharpMoney members who are winning every day.
+            Real profits from real members. Every chart is verified — see what SharpMoney members are earning.
           </p>
         </div>
       </section>
@@ -173,9 +305,9 @@ export default function ReviewsPage() {
         <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
             { value: '4.9', label: 'Average Rating', icon: '⭐' },
-            { value: '100%', label: '5-Star Reviews', icon: '🏆' },
+            { value: '175', label: 'Total Reviews', icon: '📝' },
+            { value: '95%+', label: '5-Star Reviews', icon: '🏆' },
             { value: '5K+', label: 'Community Members', icon: '👥' },
-            { value: '1yr+', label: 'Longest Members', icon: '📅' },
           ].map((stat, i) => (
             <div key={i} className="bg-card-bg border border-card-border rounded-xl p-4 text-center">
               <div className="text-2xl mb-1">{stat.icon}</div>
@@ -186,8 +318,27 @@ export default function ReviewsPage() {
         </div>
       </section>
 
-      {/* Reviews Grid */}
-      <section className="pb-16 px-6">
+      {/* Member Profit Charts (first) */}
+      <MemberResults />
+
+      {/* Testimonials Section Header */}
+      <section className="pb-4 px-6">
+        <div className="max-w-5xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 bg-cyan/10 border border-cyan/30 text-cyan text-sm font-semibold px-4 py-2 rounded-full mb-6">
+            <span className="text-yellow-400">★★★★★</span>
+            MEMBER TESTIMONIALS
+          </div>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            What Our <span className="bg-gradient-to-r from-cyan to-blue-500 bg-clip-text text-transparent">Members</span> Say
+          </h2>
+          <p className="text-white/60 max-w-2xl mx-auto">
+            Don&apos;t just take our word for it. Hear directly from the SharpMoney community.
+          </p>
+        </div>
+      </section>
+
+      {/* Reviews Grid (second) */}
+      <section className="py-12 px-6">
         <div className="max-w-5xl mx-auto">
           <div className="grid md:grid-cols-2 gap-6">
             {reviews.map((review, i) => (
