@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 
 // ============================================================
 // COURSE DATA — 11 Main Videos + 3 Alpha Videos
@@ -1371,7 +1370,7 @@ export default function LearnPage() {
     setEmail(userEmail);
     setEnrolled(true);
     setActiveVideoId(0); // Start at first video
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    if (typeof window !== 'undefined') window.scrollTo(0, 0);
   };
 
   const handleQuizComplete = (videoId: number, score: number) => {
