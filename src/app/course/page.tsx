@@ -19,7 +19,7 @@ interface CourseVideo {
   chapterTitle: string;
   title: string;
   description: string;
-  videoSrc: string; // path to MP4 in /public/course/
+  videoSrc: string; // URL to MP4 (GitHub Releases or local)
   duration: string;
   quiz: QuizQuestion[];
 }
@@ -32,7 +32,7 @@ const courseVideos: CourseVideo[] = [
     chapterTitle: 'Welcome',
     title: 'How the Academy Works',
     description: 'Before we begin — learn how the grading system works, what rewards you can earn, and how to get the most out of this course.',
-    videoSrc: '/course/0-before-course.mp4',
+    videoSrc: 'https://github.com/closingdime-tech/SharpMoney-Website/releases/download/Course-Videos/Before.Course.mp4',
     duration: '3 min',
     quiz: [],
   },
@@ -43,7 +43,7 @@ const courseVideos: CourseVideo[] = [
     chapterTitle: 'Introduction',
     title: 'Course Introduction',
     description: 'An overview of what you\'ll learn, how the course is structured, and what separates the 1% of profitable sports bettors from the rest.',
-    videoSrc: '/course/1-1-intro.mp4',
+    videoSrc: 'https://github.com/closingdime-tech/SharpMoney-Website/releases/download/Course-Videos/SharpMoney.Free.Course.1.1.mp4',
     duration: '8 min',
     quiz: [
       {
@@ -79,7 +79,7 @@ const courseVideos: CourseVideo[] = [
     chapterTitle: 'Introduction',
     title: 'Meet Robbie (ClosingDime)',
     description: 'Get to know the founder of SharpMoney — his background, how he got into sports betting, and how he turned $2,000 into a full-time edge.',
-    videoSrc: '',
+    videoSrc: 'https://github.com/closingdime-tech/SharpMoney-Website/releases/download/Course-Videos/SharpMoney.Course.1.2.mp4',
     duration: '10 min',
     quiz: [
       {
@@ -88,8 +88,8 @@ const courseVideos: CourseVideo[] = [
         correct: 2,
       },
       {
-        question: 'How did Robbie first learn about positive EV sports betting?',
-        options: ['A college professor', 'YouTube videos about OddsJam', 'A friend who was a bookie', 'Reading a book about probability'],
+        question: 'Why did Robbie start a YouTube channel about one year into his sports betting journey?',
+        options: ['To sell a course', 'He was getting limited by sportsbooks and wanted to stay involved in the community', 'His friends told him to', 'To get sponsored by sportsbooks'],
         correct: 1,
       },
       {
