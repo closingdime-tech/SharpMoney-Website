@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    .container {
+      width: 900px;
+      padding: 48px;
+      background: linear-gradient(180deg, #0a0a0a 0%, #000 100%);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .badge {
+      display: inline-block;
+      background: rgba(0, 229, 255, 0.1);
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      border-radius: 999px;
+      padding: 6px 16px;
+      font-size: 12px;
+      color: #00e5ff;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+    .title {
+      font-size: 32px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      font-size: 15px;
+      color: rgba(255,255,255,0.45);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .card {
+      border-radius: 16px;
+      padding: 28px 20px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .card-aplus {
+      background: rgba(34, 197, 94, 0.12);
+      border: 2px solid rgba(34, 197, 94, 0.5);
+      box-shadow: 0 0 30px rgba(34, 197, 94, 0.15);
+    }
+    .card-a {
+      background: rgba(34, 197, 94, 0.07);
+      border: 2px solid rgba(34, 197, 94, 0.3);
+    }
+    .card-b {
+      background: rgba(0, 229, 255, 0.08);
+      border: 2px solid rgba(0, 229, 255, 0.3);
+    }
+    .card-c {
+      background: rgba(234, 179, 8, 0.08);
+      border: 2px solid rgba(234, 179, 8, 0.3);
+    }
+    .grade {
+      font-size: 52px;
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .card-aplus .grade { color: #22c55e; }
+    .card-a .grade { color: #4ade80; }
+    .card-b .grade { color: #00e5ff; }
+    .card-c .grade { color: #eab308; }
+    .range {
+      font-size: 13px;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 14px;
+      font-weight: 500;
+    }
+    .divider {
+      width: 40px;
+      height: 1px;
+      background: rgba(255,255,255,0.1);
+      margin: 0 auto 14px;
+    }
+    .reward {
+      font-size: 15px;
+      color: rgba(255,255,255,0.85);
+      font-weight: 600;
+      line-height: 1.4;
+    }
+    .card-aplus .reward { color: #22c55e; }
+    .footer {
+      text-align: center;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .footer-text {
+      font-size: 13px;
+      color: rgba(255,255,255,0.3);
+    }
+    .footer-text span {
+      color: #00e5ff;
+      font-weight: 600;
+    }
+    .star {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="badge">SHARPMONEY BETTING ACADEMY</div>
+      <div class="title">Grading System</div>
+      <div class="subtitle">Your cumulative quiz score determines your reward</div>
+    </div>
+
+    <div class="grid">
+      <div class="card card-aplus">
+        <div class="star">&#11088;</div>
+        <div class="grade">A+</div>
+        <div class="range">90 &ndash; 100%</div>
+        <div class="divider"></div>
+        <div class="reward">Free Month<br>of Pro</div>
+      </div>
+
+      <div class="card card-a">
+        <div class="grade">A</div>
+        <div class="range">80 &ndash; 89%</div>
+        <div class="divider"></div>
+        <div class="reward">75% Off<br>First Month</div>
+      </div>
+
+      <div class="card card-b">
+        <div class="grade">B</div>
+        <div class="range">70 &ndash; 79%</div>
+        <div class="divider"></div>
+        <div class="reward">50% Off<br>First Month</div>
+      </div>
+
+      <div class="card card-c">
+        <div class="grade">C</div>
+        <div class="range">60 &ndash; 69%</div>
+        <div class="divider"></div>
+        <div class="reward">25% Off<br>First Month</div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="footer-text">Complete all <span>11 videos</span> &bull; Answer <span>55 quiz questions</span> &bull; Earn your reward</div>
+    </div>
+  </div>
+</body>
+</html>
