@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# source video files (copies live in public/course/)
+/Course Videos/
+
+# transcripts (reference only, not needed in deploy)
+/Youtube txt/
