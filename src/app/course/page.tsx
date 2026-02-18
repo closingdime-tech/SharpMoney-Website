@@ -115,7 +115,7 @@ const courseVideos: CourseVideo[] = [
     chapterTitle: 'Introduction',
     title: 'The Sports Betting Industry',
     description: 'A wake-up call about how the sports betting industry really works, why 97% of bettors lose, and how sportsbooks are designed to take your money.',
-    videoSrc: '',
+    videoSrc: 'https://github.com/closingdime-tech/SharpMoney-Website/releases/download/Course-Videos/SharpMoney.Course.1.3.mp4',
     duration: '12 min',
     quiz: [
       {
@@ -129,14 +129,14 @@ const courseVideos: CourseVideo[] = [
         correct: 3,
       },
       {
-        question: 'What is the biggest difference between the sharp and recreational sports betting communities?',
-        options: ['Sharp bettors make more content', 'Sharp bettors are less emotional and less entertaining, but actually profitable', 'Recreational bettors always lose money', 'Sharp bettors only bet on the NFL'],
-        correct: 1,
+        question: 'For every $100 bet in 2023, how much was the average bettor expected to lose?',
+        options: ['$3', '$5', '$9', '$15'],
+        correct: 2,
       },
       {
-        question: 'According to Robbie, what percentage of sports bettors are NOT profitable?',
-        options: ['85%', '90%', '95%', '97%'],
-        correct: 3,
+        question: 'Why does Robbie say knowing sports well does NOT make you a good sports bettor?',
+        options: ['Sports knowledge is irrelevant to betting odds and price sensitivity', 'Only mathematicians can bet profitably', 'You need to play the sport professionally first', 'Sports analysts always pick winners'],
+        correct: 0,
       },
       {
         question: 'Why does Robbie say celebrity-endorsed parlays on sportsbooks are bad bets?',
