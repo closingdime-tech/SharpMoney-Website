@@ -199,6 +199,85 @@ function Hero() {
   );
 }
 
+// Alpha Free Trial Banner
+function AlphaTrialBanner() {
+  return (
+    <section className="relative py-16 md:py-20 overflow-hidden">
+      {/* Background effects */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black via-yellow-500/5 to-black" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[300px] bg-yellow-500/10 rounded-full blur-[120px]" />
+      
+      <div className="relative z-10 max-w-5xl mx-auto px-6">
+        <div className="relative rounded-2xl border-2 border-yellow-500 bg-gradient-to-br from-yellow-500/15 via-yellow-600/10 to-transparent p-8 md:p-12 shadow-[0_0_60px_rgba(234,179,8,0.2)] overflow-hidden">
+          {/* Decorative corner accents */}
+          <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-500/10 rounded-full blur-2xl" />
+          <div className="absolute bottom-0 left-0 w-24 h-24 bg-yellow-500/10 rounded-full blur-2xl" />
+          
+          <div className="relative flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
+            {/* Left content */}
+            <div className="flex-1 text-center lg:text-left">
+              <div className="inline-flex items-center gap-2 bg-yellow-500/20 border border-yellow-500/40 text-yellow-400 text-sm font-bold px-4 py-1.5 rounded-full mb-4">
+                <span className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse" />
+                LIMITED TIME OFFER
+              </div>
+              
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
+                Try SharpMoney Alpha
+                <br />
+                <span className="text-yellow-400">Free for 5 Days</span>
+              </h2>
+              
+              <p className="text-white/60 text-lg mb-6 max-w-xl">
+                Get full access to our most powerful tools — Signal, advanced filters, 
+                handicapped plays, and everything in Pro. No commitment. Cancel anytime.
+              </p>
+
+              {/* Quick feature highlights */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
+                {[
+                  'SharpMoney Signal (5.9% ROI)',
+                  'Professional handicapped plays',
+                  'Advanced per-book filters',
+                  'Full line movement charts',
+                ].map((feature, i) => (
+                  <div key={i} className="flex items-center gap-2">
+                    <svg className="w-5 h-5 text-yellow-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="text-white/80 text-sm">{feature}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Right CTA */}
+            <div className="flex flex-col items-center gap-4 flex-shrink-0">
+              <div className="text-center mb-2">
+                <div className="text-white/40 text-sm line-through mb-1">$199.99/mo</div>
+                <div className="text-4xl md:text-5xl font-bold text-yellow-400">$0</div>
+                <div className="text-white/50 text-sm">for your first 5 days</div>
+              </div>
+              
+              <a
+                href="https://whop.com/sharpmoney/alpha-4e/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-black font-bold text-lg px-10 py-4 rounded-xl hover:from-yellow-400 hover:to-yellow-500 transition-all shadow-[0_0_30px_rgba(234,179,8,0.4)] hover:shadow-[0_0_50px_rgba(234,179,8,0.6)] hover:scale-105"
+              >
+                Start Your Free Trial →
+              </a>
+              
+              <p className="text-white/30 text-xs text-center">
+                No risk. Cancel before day 5 and pay nothing.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // Features Section
 function Features() {
   const features = [
@@ -881,6 +960,7 @@ export default function Home() {
       <Nav />
       <main>
         <Hero />
+        <AlphaTrialBanner />
         <Features />
         <PlusEVVideo />
         <Pricing />
