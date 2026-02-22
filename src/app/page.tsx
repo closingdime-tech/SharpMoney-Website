@@ -179,7 +179,7 @@ function Hero() {
           {[
             { value: '5K+', label: 'Community Members' },
             { value: '20+', label: 'Sportsbooks' },
-            { value: '5%+', label: 'ROI on Signal' },
+            { value: '5.4%', label: 'ROI on Signal' },
           ].map((stat, i) => (
             <div key={i} className="text-center">
               <div className="text-3xl md:text-4xl font-bold text-cyan mb-2">{stat.value}</div>
@@ -235,7 +235,7 @@ function AlphaTrialBanner() {
               {/* Quick feature highlights */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
                 {[
-                  'SharpMoney Signal (5.9% ROI)',
+                  'SharpMoney Signal (5.4% ROI)',
                   'Professional handicapped plays',
                   'Advanced per-book filters',
                   'Full line movement charts',
@@ -677,25 +677,38 @@ function Signal() {
         {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-12">
           {[
-            { value: '12,400', label: 'Total Bets', color: 'text-cyan' },
-            { value: '6613W - 5218L', label: 'Record', color: 'text-white', highlight: true },
-            { value: '55.9%', label: 'Win Rate', color: 'text-cyan' },
-            { value: '+$70,108', label: 'Profit/Loss', color: 'text-green-400' },
-            { value: '+5.9%', label: 'ROI', color: 'text-green-400' },
+            { value: '32,079', label: 'Total Bets', color: 'text-cyan' },
+            { value: '17104W - 13600L', label: 'Record', color: 'text-white', highlight: true },
+            { value: '55.7%', label: 'Win Rate', color: 'text-cyan' },
+            { value: '+$164,602', label: 'Profit/Loss ($100/bet)', color: 'text-green-400' },
+            { value: '+5.4%', label: 'ROI', color: 'text-green-400' },
           ].map((stat, i) => (
             <div key={i} className="bg-card-bg border border-card-border rounded-xl p-4 text-center">
               <div className={`text-xl md:text-2xl font-bold mb-1 ${stat.color}`}>
                 {stat.highlight ? (
                   <>
-                    <span className="text-green-400">6613W</span>
+                    <span className="text-green-400">17104W</span>
                     <span className="text-white/50"> - </span>
-                    <span className="text-red-400">5218L</span>
+                    <span className="text-red-400">13600L</span>
                   </>
                 ) : stat.value}
               </div>
               <div className="text-xs text-white/50 uppercase tracking-wide">{stat.label}</div>
             </div>
           ))}
+        </div>
+
+        {/* Signal Video Explainer */}
+        <div className="gradient-border p-2 md:p-3 mb-12">
+          <div className="relative rounded-xl overflow-hidden bg-black aspect-video">
+            <iframe
+              src="https://www.youtube.com/embed/sQgFWJTKVmI"
+              title="SharpMoney Signal Explained"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="w-full h-full"
+            />
+          </div>
         </div>
 
         {/* Profit Chart Visualization */}
@@ -706,8 +719,8 @@ function Signal() {
             </div>
             <div className="flex items-center gap-2 text-sm">
               <span className="w-3 h-3 bg-green-400 rounded-full"></span>
-              <span className="text-white/70">P/L: <span className="text-green-400 font-semibold">+$70,108</span></span>
-              <span className="text-white/40 ml-2">| 11,831 graded bets</span>
+              <span className="text-white/70">P/L: <span className="text-green-400 font-semibold">+$164,602</span> <span className="text-white/40">(+1,646 units)</span></span>
+              <span className="text-white/40 ml-2">| 30,704 graded bets</span>
             </div>
           </div>
           
@@ -745,10 +758,10 @@ function Signal() {
             
             {/* Y-axis labels */}
             <div className="absolute left-0 top-0 h-full flex flex-col justify-between text-xs text-white/40 -ml-2">
-              <span>$+80K</span>
+              <span>$+180K</span>
+              <span>$+140K</span>
+              <span>$+100K</span>
               <span>$+60K</span>
-              <span>$+40K</span>
-              <span>$+20K</span>
               <span>$0</span>
             </div>
           </div>
@@ -763,8 +776,8 @@ function Signal() {
           <div className="space-y-4">
             {[
               'Every play includes our Signal price and visual strength rating',
-              '55.9% win rate (only 52.4% needed to break even)',
-              'Exposed over $70K in profit on tracked bets',
+              '55.7% win rate (only 52.4% needed to break even)',
+              '+1,646 units ($164K) in profit on 30,000+ tracked bets',
               'Simple to use. Hard to replicate.',
             ].map((item, i) => (
               <div key={i} className="flex items-start gap-3">
