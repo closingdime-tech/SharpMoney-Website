@@ -465,7 +465,7 @@ const alphaVideos: AlphaVideo[] = [
   {
     id: 2,
     title: 'Advanced +EV Tool Settings',
-    description: 'Unlock the full power of SharpMoney with per-book custom EV thresholds, per-period limit overrides, advanced filtering, and unlimited historical data. The settings that separate power users from everyone else.',
+    description: 'Unlock the full power of SharpMoney with per-book custom EV thresholds, per-period limit overrides, and advanced filtering. The settings that separate power users from everyone else.',
     comingSoon: true,
   },
 ];

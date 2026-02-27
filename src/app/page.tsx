@@ -537,7 +537,6 @@ function Pricing() {
         'Signal strength bars & player prop signals',
         'Per-book custom EV thresholds',
         'Per-period EV and limit overrides',
-        'Unlimited historical data',
         'All future add-ons included',
         'Priority support & early access',
       ],
