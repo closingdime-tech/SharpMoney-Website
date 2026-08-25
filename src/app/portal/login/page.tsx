@@ -19,12 +19,14 @@ export default function PortalLoginPage() {
 		setLoading(true);
 		try {
 			const supabase = createClient();
-			const { error } = await supabase.auth.signInWithPassword({ email, password });
+			const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 			if (error) {
 				setError(error.message || "Login failed");
 				return;
 			}
-			router.push("/portal");
+			// Admins go to the owner dashboard; affiliates to their portal.
+			const isAdmin = data.user?.app_metadata?.role === "admin";
+			router.push(isAdmin ? "/affiliates-dashboard" : "/portal");
 			router.refresh();
 		} catch {
 			setError("Network error");

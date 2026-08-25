@@ -63,6 +63,10 @@ export default async function PortalDashboard() {
 	if (!user) {
 		redirect("/portal/login");
 	}
+	// Admins belong on the owner dashboard, not an affiliate portal.
+	if (user.app_metadata?.role === "admin") {
+		redirect("/affiliates-dashboard");
+	}
 
 	// Own affiliate row (RLS: own rows only, source='sheet').
 	const { data: affiliate, error: affErr } = await supabase
