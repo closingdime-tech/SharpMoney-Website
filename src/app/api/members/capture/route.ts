@@ -64,64 +64,109 @@ async function handle(req: NextRequest) {
 	if (exErr) return NextResponse.json({ error: "read members failed", detail: exErr.message }, { status: 500 });
 	const known = new Set((existing ?? []).map((m) => m.whop_member_id));
 
+	// checkout_configuration_id -> affiliate_id (Gap B: auto-assign source).
+	const { data: keys } = await supabase
+		.from("attribution_keys")
+		.select("whop_key_id, affiliate_id")
+		.eq("key_type", "checkout_configuration");
+	const ccidToAffiliate = new Map<string, string>(
+		(keys ?? []).map((k) => [k.whop_key_id as string, k.affiliate_id as string])
+	);
+
 	// Collect candidate member ids from payments (dedup, only unknown).
-	const candidates = new Map<string, { username: string; product: string | null; price: number | null }>();
+	// Gap A: include_free=true so $0 joins (free-tier config links) are captured.
+	type Cand = { username: string; product: string | null; price: number | null; ccid: string | null };
+	const candidates = new Map<string, Cand>();
 	let after: string | null = null;
 	let pages = 0;
 	const maxPages = deep ? MAX_PAGES_DEEP : 1;
 	outer: while (pages < maxPages) {
-		const url = `payments?company_id=${COMPANY_ID}` + (after ? `&after=${after}` : "");
+		const url = `payments?company_id=${COMPANY_ID}&include_free=true` + (after ? `&after=${after}` : "");
 		const d = await whopGet(url, key);
 		pages++;
 		const rows: any[] = Array.isArray(d?.data) ? d.data : [];
 		for (const p of rows) {
 			const mber = p?.member?.id;
-			if (!mber || known.has(mber) || candidates.has(mber)) continue;
+			if (!mber || known.has(mber)) continue;
+			const ccid = p?.checkout_configuration_id ?? null;
+			const prev = candidates.get(mber);
+			if (prev) {
+				if (!prev.ccid && ccid) prev.ccid = ccid; // keep a ccid if any of their payments has one
+				continue;
+			}
 			candidates.set(mber, {
 				username: p?.user?.username ?? "unknown",
 				product: p?.product?.title ?? null,
 				price: money(p?.usd_total ?? p?.total),
+				ccid,
 			});
 			if (deep && p?.created_at && Date.parse(p.created_at) < cutoff) break outer;
 		}
 		const pi = d?.page_info ?? {};
 		if (!pi.has_next_page || !pi.end_cursor) break;
-		// stop deep sweep once we've paged past the cutoff window
 		if (deep && rows.length && rows[rows.length - 1]?.created_at && Date.parse(rows[rows.length - 1].created_at) < cutoff) break;
 		after = pi.end_cursor as string;
 	}
 
-	// Enrich each new member via /members/{mber} for join date + status, then insert.
+	// Enrich via /members/{mber} for join date + status. Auto-assign when the payment's
+	// checkout_configuration_id maps to an affiliate; otherwise queue as unassigned.
 	const toInsert: any[] = [];
+	const autoAssign = new Map<string, { affiliate_id: string; ccid: string }>();
 	for (const [mber, info] of candidates) {
 		const wm = await whopGet("members/" + mber, key);
 		const status = wm?.most_recent_action ? STATUS_MAP[wm.most_recent_action] ?? "active" : "active";
+		const mapped = info.ccid ? ccidToAffiliate.get(info.ccid) ?? null : null;
+		if (mapped && info.ccid) autoAssign.set(mber, { affiliate_id: mapped, ccid: info.ccid });
 		toInsert.push({
 			whop_member_id: mber,
 			username: info.username,
-			affiliate_id: null,
+			affiliate_id: mapped,
 			product: info.product,
 			plan_price_usd: info.price,
 			monthly_reward_usd: null,
 			referred_at: wm?.joined_at ?? null,
 			status,
 			commission_active: null,
-			notes: "auto-captured from payments; unassigned",
+			notes: mapped ? `auto-assigned via ${info.ccid}` : "auto-captured from payments; unassigned",
 		});
 	}
 
 	let inserted = 0;
+	let autoAssigned = 0;
 	if (toInsert.length) {
-		// ignore-duplicates in case of a race with the manual roster
 		const { data, error } = await supabase
 			.from("members")
 			.upsert(toInsert, { onConflict: "whop_member_id", ignoreDuplicates: true })
-			.select("id");
+			.select("id, whop_member_id");
 		if (error) return NextResponse.json({ error: "insert failed", detail: error.message }, { status: 500 });
 		inserted = data?.length ?? 0;
+
+		// Log auto-assignments to member_flags (trail; distinct from manual assigns).
+		const flags = (data ?? [])
+			.map((row) => {
+				const a = autoAssign.get(row.whop_member_id as string);
+				return a
+					? {
+							member_id: row.id,
+							flag_type: "auto_assigned",
+							detail: `auto_assigned to ${a.affiliate_id} via ${a.ccid}`,
+							status: "reviewed",
+							reviewed_at: new Date().toISOString(),
+					  }
+					: null;
+			})
+			.filter(Boolean);
+		autoAssigned = flags.length;
+		if (flags.length) await supabase.from("member_flags").insert(flags as Record<string, unknown>[]);
 	}
 
-	return NextResponse.json({ mode: deep ? "deep-backfill" : "daily", pagesScanned: pages, newCandidates: candidates.size, inserted });
+	return NextResponse.json({
+		mode: deep ? "deep-backfill" : "daily",
+		pagesScanned: pages,
+		newCandidates: candidates.size,
+		inserted,
+		autoAssigned,
+	});
 }
 
 export async function GET(req: NextRequest) {
