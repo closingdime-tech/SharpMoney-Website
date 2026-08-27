@@ -29,9 +29,11 @@ const STATUS_STYLE: Record<string, { label: string; cls: string }> = {
 	free: { label: "Free", cls: "bg-white/10 text-white/50" },
 };
 const STATUS_ORDER = ["active", "canceled_pending", "lapsed", "expired", "free"];
-function incomeBadge(v: boolean | null) {
-	if (v === true) return { label: "Income", cls: "bg-cyan/15 text-cyan" };
-	if (v === false) return { label: "No income", cls: "bg-white/10 text-white/40" };
+function incomeBadge(m: Member) {
+	// Free-plan members read "Free" (not "Unconfirmed") — there's no income to confirm.
+	if (!m.plan_price_usd) return { label: "Free", cls: "bg-white/10 text-white/50" };
+	if (m.commission_active === true) return { label: "Income", cls: "bg-cyan/15 text-cyan" };
+	if (m.commission_active === false) return { label: "No income", cls: "bg-white/10 text-white/40" };
 	return { label: "Unconfirmed", cls: "bg-amber-500/10 text-amber-400/70" };
 }
 
@@ -213,7 +215,7 @@ export default function MembersTable({
 								<tbody>
 									{rows.map((m) => {
 										const st = STATUS_STYLE[m.status] ?? { label: m.status, cls: "bg-white/10 text-white/50" };
-										const ib = incomeBadge(m.commission_active);
+										const ib = incomeBadge(m);
 										const paying = m.commission_active === true;
 										return (
 											<tr key={m.id} className="border-b border-white/5 last:border-0">
