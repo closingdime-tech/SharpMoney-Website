@@ -24,6 +24,7 @@ export default function UnassignedQueue() {
 	const [busy, setBusy] = useState(false);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState("");
+	const [view, setView] = useState<"paying" | "free" | "all">("paying");
 
 	useEffect(() => {
 		fetch("/api/admin/unassigned")
@@ -46,9 +47,15 @@ export default function UnassignedQueue() {
 			return n;
 		});
 	}
-	const allShownSelected = members.length > 0 && members.every((m) => selected.has(m.id));
+	const isPaying = (m: UMember) => m.plan_price_usd != null && m.plan_price_usd > 0;
+	const shown = members.filter((m) =>
+		view === "all" ? true : view === "paying" ? isPaying(m) : !isPaying(m)
+	);
+	const payingCount = members.filter(isPaying).length;
+	const freeCount = members.length - payingCount;
+	const allShownSelected = shown.length > 0 && shown.every((m) => selected.has(m.id));
 	function toggleAll() {
-		setSelected(allShownSelected ? new Set() : new Set(members.map((m) => m.id)));
+		setSelected(allShownSelected ? new Set() : new Set(shown.map((m) => m.id)));
 	}
 
 	async function assign(memberId: string) {
@@ -96,11 +103,13 @@ export default function UnassignedQueue() {
 
 	return (
 		<section style={{ padding: 32, maxWidth: 1100, margin: "0 auto", fontFamily: "sans-serif" }}>
-			<h2 style={{ marginBottom: 4 }}>Unassigned members {members.length ? `(${members.length})` : ""}</h2>
+			<h2 style={{ marginBottom: 4 }}>
+				Unassigned members {members.length ? `(${payingCount} paying · ${freeCount} free)` : ""}
+			</h2>
 			<p style={{ color: "#666", marginTop: 0 }}>
-				Auto-captured from payments with no affiliate yet. Assign the ones that belong to an
-				affiliate; dismiss direct customers (&ldquo;not affiliate-referred&rdquo;) to clear them —
-				dismissed members won&apos;t be re-captured.
+				Auto-captured from payments with no affiliate yet. Defaults to <b>paying</b> members;
+				free joins stay captured but out of the way (and surface here if they later upgrade).
+				Assign the ones that belong to an affiliate; dismiss direct customers to clear them.
 			</p>
 
 			{loading ? (
@@ -111,19 +120,48 @@ export default function UnassignedQueue() {
 				<p style={{ color: "#666" }}>Queue is empty.</p>
 			) : (
 				<>
+					<div style={{ display: "flex", gap: 8, alignItems: "center", margin: "12px 0" }}>
+						<span style={{ color: "#666", fontSize: 13 }}>View:</span>
+						{(
+							[
+								["paying", `Paying (${payingCount})`],
+								["free", `Free (${freeCount})`],
+								["all", `All (${members.length})`],
+							] as const
+						).map(([v, label]) => (
+							<button
+								key={v}
+								onClick={() => {
+									setView(v);
+									setSelected(new Set());
+								}}
+								style={{
+									fontWeight: view === v ? 700 : 400,
+									background: view === v ? "#111" : "#eee",
+									color: view === v ? "#fff" : "#333",
+									border: "none",
+									borderRadius: 6,
+									padding: "4px 10px",
+									cursor: "pointer",
+								}}
+							>
+								{label}
+							</button>
+						))}
+					</div>
 					<div style={{ display: "flex", gap: 12, alignItems: "center", margin: "12px 0" }}>
 						<button disabled={busy || selected.size === 0} onClick={() => dismiss([...selected])}>
 							Dismiss selected ({selected.size})
 						</button>
 						<button
-							disabled={busy}
+							disabled={busy || shown.length === 0}
 							onClick={() => {
-								if (confirm(`Dismiss all ${members.length} shown as not affiliate-referred?`))
-									dismiss(members.map((m) => m.id));
+								if (confirm(`Dismiss all ${shown.length} shown (${view}) as not affiliate-referred?`))
+									dismiss(shown.map((m) => m.id));
 							}}
 							style={{ color: "crimson" }}
 						>
-							Dismiss all shown ({members.length})
+							Dismiss all shown ({shown.length})
 						</button>
 						{busy && <span style={{ color: "#666" }}>working…</span>}
 					</div>
@@ -143,7 +181,14 @@ export default function UnassignedQueue() {
 							</tr>
 						</thead>
 						<tbody>
-							{members.map((m) => (
+							{shown.length === 0 && (
+								<tr>
+									<td style={td} colSpan={7} align="center">
+										No members in this view.
+									</td>
+								</tr>
+							)}
+							{shown.map((m) => (
 								<tr key={m.id}>
 									<td style={td}>
 										<input type="checkbox" checked={selected.has(m.id)} onChange={() => toggle(m.id)} />

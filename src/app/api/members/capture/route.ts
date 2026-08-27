@@ -73,6 +73,20 @@ async function handle(req: NextRequest) {
 		(keys ?? []).map((k) => [k.whop_key_id as string, k.affiliate_id as string])
 	);
 
+	// Free + unassigned members: if a PAID payment later arrives for one, reclassify
+	// it to paying so it surfaces in the Paying view (upgrade detection).
+	const { data: unassigned } = await supabase
+		.from("members")
+		.select("id, whop_member_id, plan_price_usd")
+		.is("affiliate_id", null);
+	const freeUnassigned = new Map<string, string>(); // whop_member_id -> members.id
+	for (const m of unassigned ?? []) {
+		if (m.plan_price_usd == null || Number(m.plan_price_usd) === 0) {
+			freeUnassigned.set(m.whop_member_id as string, m.id as string);
+		}
+	}
+	const upgrades = new Map<string, { id: string; price: number; product: string | null }>();
+
 	// Collect candidate member ids from payments (dedup, only unknown).
 	// Gap A: include_free=true so $0 joins (free-tier config links) are captured.
 	type Cand = { username: string; product: string | null; price: number | null; ccid: string | null };
@@ -87,7 +101,16 @@ async function handle(req: NextRequest) {
 		const rows: any[] = Array.isArray(d?.data) ? d.data : [];
 		for (const p of rows) {
 			const mber = p?.member?.id;
-			if (!mber || known.has(mber)) continue;
+			if (!mber) continue;
+			const price = money(p?.usd_total ?? p?.total);
+			if (known.has(mber)) {
+				// upgrade: a free+unassigned member now has a paid payment -> reclassify to paying
+				const fuId = freeUnassigned.get(mber);
+				if (fuId && price != null && price > 0 && !upgrades.has(mber)) {
+					upgrades.set(mber, { id: fuId, price, product: p?.product?.title ?? null });
+				}
+				continue;
+			}
 			const ccid = p?.checkout_configuration_id ?? null;
 			const prev = candidates.get(mber);
 			if (prev) {
@@ -97,7 +120,7 @@ async function handle(req: NextRequest) {
 			candidates.set(mber, {
 				username: p?.user?.username ?? "unknown",
 				product: p?.product?.title ?? null,
-				price: money(p?.usd_total ?? p?.total),
+				price,
 				ccid,
 			});
 			if (deep && p?.created_at && Date.parse(p.created_at) < cutoff) break outer;
@@ -160,12 +183,34 @@ async function handle(req: NextRequest) {
 		if (flags.length) await supabase.from("member_flags").insert(flags as Record<string, unknown>[]);
 	}
 
+	// Apply upgrades: free+unassigned members that now have a paid payment become
+	// paying (surface in the Paying view). Still unassigned — for manual assign.
+	let upgraded = 0;
+	for (const [, u] of upgrades) {
+		const { error } = await supabase
+			.from("members")
+			.update({ plan_price_usd: u.price, product: u.product })
+			.eq("id", u.id)
+			.is("affiliate_id", null); // only reclassify while still unassigned
+		if (!error) {
+			upgraded++;
+			await supabase.from("member_flags").insert({
+				member_id: u.id,
+				flag_type: "upgraded_to_paying",
+				detail: `free -> paying ($${u.price}) ${u.product ?? ""}`.trim(),
+				status: "reviewed",
+				reviewed_at: new Date().toISOString(),
+			});
+		}
+	}
+
 	return NextResponse.json({
 		mode: deep ? "deep-backfill" : "daily",
 		pagesScanned: pages,
 		newCandidates: candidates.size,
 		inserted,
 		autoAssigned,
+		upgraded,
 	});
 }
 
