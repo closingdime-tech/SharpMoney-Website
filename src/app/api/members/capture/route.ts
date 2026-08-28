@@ -73,19 +73,19 @@ async function handle(req: NextRequest) {
 		(keys ?? []).map((k) => [k.whop_key_id as string, k.affiliate_id as string])
 	);
 
-	// Free + unassigned members: if a PAID payment later arrives for one, reclassify
-	// it to paying so it surfaces in the Paying view (upgrade detection).
-	const { data: unassigned } = await supabase
+	// Free members (ANY assignment): if a PAID payment later arrives, reclassify to
+	// paying — update plan_price + product. Unassigned ones then surface in the Paying
+	// view; assigned ones also raise an OPEN commission_review flag so the owner can
+	// confirm and flip commission_active (never auto-flipped).
+	const { data: freeRows } = await supabase
 		.from("members")
-		.select("id, whop_member_id, plan_price_usd")
-		.is("affiliate_id", null);
-	const freeUnassigned = new Map<string, string>(); // whop_member_id -> members.id
-	for (const m of unassigned ?? []) {
-		if (m.plan_price_usd == null || Number(m.plan_price_usd) === 0) {
-			freeUnassigned.set(m.whop_member_id as string, m.id as string);
-		}
+		.select("id, whop_member_id, plan_price_usd, affiliate_id")
+		.or("plan_price_usd.is.null,plan_price_usd.eq.0");
+	const freeMembers = new Map<string, { id: string; assigned: boolean }>();
+	for (const m of freeRows ?? []) {
+		freeMembers.set(m.whop_member_id as string, { id: m.id as string, assigned: m.affiliate_id != null });
 	}
-	const upgrades = new Map<string, { id: string; price: number; product: string | null }>();
+	const upgrades = new Map<string, { id: string; price: number; product: string | null; assigned: boolean }>();
 
 	// Collect candidate member ids from payments (dedup, only unknown).
 	// Gap A: include_free=true so $0 joins (free-tier config links) are captured.
@@ -104,10 +104,10 @@ async function handle(req: NextRequest) {
 			if (!mber) continue;
 			const price = money(p?.usd_total ?? p?.total);
 			if (known.has(mber)) {
-				// upgrade: a free+unassigned member now has a paid payment -> reclassify to paying
-				const fuId = freeUnassigned.get(mber);
-				if (fuId && price != null && price > 0 && !upgrades.has(mber)) {
-					upgrades.set(mber, { id: fuId, price, product: p?.product?.title ?? null });
+				// upgrade: a free member now has a paid payment -> reclassify to paying
+				const fm = freeMembers.get(mber);
+				if (fm && price != null && price > 0 && !upgrades.has(mber)) {
+					upgrades.set(mber, { id: fm.id, price, product: p?.product?.title ?? null, assigned: fm.assigned });
 				}
 				continue;
 			}
@@ -183,24 +183,36 @@ async function handle(req: NextRequest) {
 		if (flags.length) await supabase.from("member_flags").insert(flags as Record<string, unknown>[]);
 	}
 
-	// Apply upgrades: free+unassigned members that now have a paid payment become
-	// paying (surface in the Paying view). Still unassigned — for manual assign.
+	// Apply upgrades: any free member with a new paid payment becomes paying — update
+	// plan_price + product (regardless of assignment). Log upgraded_to_paying (history);
+	// assigned members also get an OPEN commission_review flag. commission_active is
+	// never auto-flipped — the owner confirms.
 	let upgraded = 0;
 	for (const [, u] of upgrades) {
 		const { error } = await supabase
 			.from("members")
 			.update({ plan_price_usd: u.price, product: u.product })
-			.eq("id", u.id)
-			.is("affiliate_id", null); // only reclassify while still unassigned
+			.eq("id", u.id);
 		if (!error) {
 			upgraded++;
-			await supabase.from("member_flags").insert({
-				member_id: u.id,
-				flag_type: "upgraded_to_paying",
-				detail: `free -> paying ($${u.price}) ${u.product ?? ""}`.trim(),
-				status: "reviewed",
-				reviewed_at: new Date().toISOString(),
-			});
+			const flags: Record<string, unknown>[] = [
+				{
+					member_id: u.id,
+					flag_type: "upgraded_to_paying",
+					detail: `free -> paying ($${u.price}) ${u.product ?? ""}`.trim(),
+					status: "reviewed",
+					reviewed_at: new Date().toISOString(),
+				},
+			];
+			if (u.assigned) {
+				flags.push({
+					member_id: u.id,
+					flag_type: "commission_review",
+					detail: `assigned member converted free -> paid ($${u.price}); confirm commission_active`,
+					status: "open",
+				});
+			}
+			await supabase.from("member_flags").insert(flags);
 		}
 	}
 
