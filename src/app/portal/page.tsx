@@ -137,6 +137,19 @@ export default async function PortalDashboard() {
 		};
 	}
 
+	// Own checkout-configuration links (RLS own rows). Keyed by product so PortalLinks
+	// can use the ch_ URL per plan and fall back to the ?a= template when missing.
+	const { data: akData } = await supabase
+		.from("attribution_keys")
+		.select("label, whop_key_id")
+		.eq("affiliate_id", affiliate.id)
+		.eq("key_type", "checkout_configuration");
+	const configUrls: Record<string, string> = {};
+	for (const k of akData ?? []) {
+		const key = String(k.label).startsWith("Core") ? "Core" : String(k.label);
+		configUrls[key] = `https://whop.com/checkout/${k.whop_key_id}/`;
+	}
+
 	// Earnings (the affiliate's payout) is shown separately/prominently below.
 	// These grid figures are what the affiliate generates FOR SharpMoney.
 	// Third element (optional) is a tooltip note. active_members is a
@@ -279,7 +292,7 @@ export default async function PortalDashboard() {
 					</>
 				)}
 
-				<PortalLinks username={affiliate.whop_username ?? ""} />
+				<PortalLinks username={affiliate.whop_username ?? ""} configUrls={configUrls} />
 
 				<MembersTable
 					members={members}

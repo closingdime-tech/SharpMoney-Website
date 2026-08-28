@@ -14,13 +14,22 @@ const PLANS: PlanLink[] = [
 	{ label: "Core", route: "core-ae", plan: "plan_q2zQ6EHBluewl" },
 ];
 
-function buildLink(p: PlanLink, username: string): string {
-	if (p.configuredUrl) return p.configuredUrl; // future: configured checkout URLs
+// Template fallback (used when this affiliate has no configured ch_ URL for a plan).
+function templateLink(p: PlanLink, username: string): string {
 	return `https://whop.com/sharpmoney/${p.route}/?directPlanId=${p.plan}&a=${encodeURIComponent(username)}`;
 }
 // ─────────────────────────────────────────────────────────────────────────────
 
-export default function PortalLinks({ username }: { username: string }) {
+export default function PortalLinks({
+	username,
+	configUrls,
+}: {
+	username: string;
+	// product label ("Alpha" | "Pro" | "Core") -> checkout/ch_ URL from attribution_keys
+	configUrls?: Record<string, string>;
+}) {
+	// Prefer the affiliate's configured ch_ URL; fall back to the ?a= template.
+	const linkFor = (p: PlanLink) => configUrls?.[p.label] ?? templateLink(p, username);
 	const [copied, setCopied] = useState<string | null>(null);
 
 	async function copy(label: string, url: string) {
@@ -38,7 +47,7 @@ export default function PortalLinks({ username }: { username: string }) {
 			<p className="text-white/40 text-xs uppercase tracking-wider mb-3">Your share links</p>
 			<div className="grid gap-3 sm:grid-cols-3">
 				{PLANS.map((p) => {
-					const url = buildLink(p, username);
+					const url = linkFor(p);
 					return (
 						<div key={p.label} className="border border-white/10 rounded-2xl p-4 bg-[#0a0a0a]">
 							<div className="flex items-center justify-between mb-2">
