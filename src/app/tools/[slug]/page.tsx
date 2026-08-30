@@ -12,6 +12,7 @@ import HedgeCalculator from '@/components/Tools/HedgeCalculator';
 import ArbitrageCalculator from '@/components/Tools/ArbitrageCalculator';
 import ParlayCalculator from '@/components/Tools/ParlayCalculator';
 import HoldCalculator from '@/components/Tools/HoldCalculator';
+import OddsProbabilityChart from '@/components/Tools/OddsProbabilityChart';
 import BankrollSimulator from '@/components/Tools/BankrollSimulator';
 import UnitSizeCalculator from '@/components/Tools/UnitSizeCalculator';
 import { APP_URL } from '@/lib/app-url';
@@ -95,6 +96,14 @@ const TOOLS: ToolDef[] = [
     category: 'essentials',
   },
   {
+    id: 'odds-probability-chart',
+    name: 'Odds to Probability Chart',
+    shortName: 'Chart',
+    icon: '📋',
+    description: 'Reference chart mapping American odds to implied win probability.',
+    category: 'essentials',
+  },
+  {
     id: 'unit-size-calculator',
     name: 'Unit Size Calculator',
     shortName: 'Units',
@@ -138,6 +147,8 @@ function ToolRenderer({ toolId, isMobile }: { toolId: string; isMobile: boolean 
       return <ParlayCalculator isMobile={isMobile} />;
     case 'hold-calculator':
       return <HoldCalculator isMobile={isMobile} />;
+    case 'odds-probability-chart':
+      return <OddsProbabilityChart isMobile={isMobile} />;
     case 'unit-size-calculator':
       return <UnitSizeCalculator isMobile={isMobile} />;
     case 'bankroll-simulator':
