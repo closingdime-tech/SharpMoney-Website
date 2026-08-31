@@ -116,6 +116,18 @@ const TOOL_META: Record<
       "free parlay calculator",
     ],
   },
+  "odds-probability-chart": {
+    title: "Odds to Probability Chart — American Odds to Implied Win %",
+    description:
+      "Reference chart that maps American odds to implied win probability. See what -110, +150, or any line really means. Free, no sign-up required.",
+    keywords: [
+      "odds to probability chart",
+      "american odds to probability",
+      "implied probability chart",
+      "betting odds chart",
+      "odds conversion table",
+    ],
+  },
   "hold-calculator": {
     title: "Free Hold Calculator — Sportsbook Hold Percentage",
     description:

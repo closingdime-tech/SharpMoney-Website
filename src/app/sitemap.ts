@@ -138,6 +138,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
+      url: `${baseUrl}/tools/odds-probability-chart`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
       url: `${baseUrl}/tools/hold-calculator`,
       lastModified: new Date(),
       changeFrequency: "monthly",
